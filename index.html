@@ -1,0 +1,1943 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support Trainer — ТехноДім</title>
+<style>
+:root{
+  --bg:#f2f5fa; --panel:#ffffff; --text:#1d2530; --muted:#68758c; --accent:#2e6be6; --accent-soft:#e8effd;
+  --border:#dde4ee; --ok:#1e9e56; --warn:#b97e0c; --bad:#d54545;
+  --bubble-c:#ffffff; --bubble-o:#2e6be6; --bubble-o-text:#ffffff;
+  --shadow:0 2px 10px rgba(30,40,60,.07);
+}
+body[data-theme="dark"]{--bg:#12161f;--panel:#1b2230;--text:#e7ecf4;--muted:#94a0b4;--accent:#5b8cff;--accent-soft:#24304a;--border:#2a3448;--ok:#45d07c;--warn:#e5b04c;--bad:#ef7070;--bubble-c:#222b3d;--bubble-o:#3b5bdb;--bubble-o-text:#fff;--shadow:0 2px 12px rgba(0,0,0,.35)}
+body[data-theme="sea"]{--bg:#e9f5f7;--panel:#fff;--text:#14333a;--muted:#557a82;--accent:#0d8a9f;--accent-soft:#dff1f4;--border:#cfe6ea;--ok:#128a5e;--warn:#b97e0c;--bad:#d54545;--bubble-c:#fff;--bubble-o:#0d8a9f;--bubble-o-text:#fff}
+body[data-theme="cream"]{--bg:#f7f1e6;--panel:#fffdf8;--text:#3a2f1e;--muted:#8a7a5f;--accent:#b4762a;--accent-soft:#f5e9d6;--border:#e8dcc6;--ok:#5e8c31;--warn:#b97e0c;--bad:#c04f3c;--bubble-c:#fffdf8;--bubble-o:#b4762a;--bubble-o-text:#fff}
+body[data-theme="forest"]{--bg:#eef5ec;--panel:#fff;--text:#1c2e20;--muted:#5d7a64;--accent:#2e7d43;--accent-soft:#e2f1e5;--border:#d3e5d6;--ok:#2e7d43;--warn:#b97e0c;--bad:#c04f3c;--bubble-c:#fff;--bubble-o:#2e7d43;--bubble-o-text:#fff}
+body[data-theme="neon"]{--bg:#0d0f1a;--panel:#171a2b;--text:#e8ecff;--muted:#8f97c4;--accent:#00e5a0;--accent-soft:#1c2a44;--border:#262c4a;--ok:#00e5a0;--warn:#ffd166;--bad:#ff5c8a;--bubble-c:#1d2138;--bubble-o:#00b380;--bubble-o-text:#04150e;--shadow:0 2px 12px rgba(0,0,0,.5)}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Segoe UI",system-ui,Arial,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.45}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+header{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--border);box-shadow:var(--shadow)}
+.hdr{display:flex;align-items:center;gap:12px;padding:10px 0;flex-wrap:wrap}
+.logo{font-weight:700;font-size:17px;white-space:nowrap}
+.logo small{color:var(--muted);font-weight:400}
+.hspace{flex:1}
+.chip{display:inline-flex;align-items:center;gap:5px;background:var(--accent-soft);color:var(--text);border-radius:999px;padding:3px 10px;font-size:12.5px;white-space:nowrap}
+.chip.ok{background:var(--ok);color:#fff}
+.chip.bad{background:var(--bad);color:#fff}
+.chip.dim{opacity:.65}
+.chip.cat{font-weight:600}
+.xpwrap{display:flex;flex-direction:column;gap:2px;min-width:150px}
+.bar{height:8px;background:var(--accent-soft);border-radius:6px;overflow:hidden}
+.bar .fill{height:100%;background:var(--accent);border-radius:6px;transition:width .4s}
+.bar.big{height:12px}
+nav.tabs{display:flex;gap:6px;padding:0 0 10px;flex-wrap:wrap}
+button{font-family:inherit;font-size:14px;cursor:pointer}
+.tab{background:none;border:1px solid transparent;border-radius:8px;padding:7px 14px;color:var(--muted);font-weight:600}
+.tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+main{padding:16px 0 60px}
+.tabpane{display:none}
+.tabpane.active{display:block}
+.cmpgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cmpcol{border:1px solid var(--border);border-radius:10px;padding:10px;min-width:0}
+.cmpcol .ans{white-space:pre-wrap;font-size:13.5px;margin-bottom:6px;background:var(--accent-soft);border-radius:8px;padding:6px 9px}
+.factrow{font-size:13.5px;padding:3px 0}
+.factrow.miss{opacity:.6}
+@media(max-width:860px){.catgrid{grid-template-columns:repeat(2,1fr)}.grid2,.grid3,.statcards{grid-template-columns:1fr}.msg{max-width:95%}.cmpgrid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}
+.card h3{margin:0 0 10px;font-size:16px}
+.card h4{margin:14px 0 6px;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+h2{font-size:19px;margin:4px 0 10px}
+.muted{color:var(--muted)}
+.small{font-size:12.5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.catgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.catcard{position:relative;background:var(--panel);border:1.5px solid var(--border);border-radius:12px;padding:12px 10px;text-align:center;color:var(--text);display:flex;flex-direction:column;gap:4px;transition:border-color .2s, transform .1s}
+.catcard:hover{border-color:var(--accent)}
+.catcard.sel{border-color:var(--accent);background:var(--accent-soft)}
+.catcard.locked{opacity:.55;filter:grayscale(.4)}
+.catcard .cicon{font-size:26px}
+.catcard .cname{font-weight:600;font-size:13.5px}
+.catcard .ccount{font-size:11.5px;color:var(--muted)}
+.lock{position:absolute;top:8px;right:8px;font-size:11px;background:var(--warn);color:#fff;border-radius:6px;padding:1px 6px}
+.btn{background:var(--accent-soft);color:var(--text);border:1px solid var(--border);border-radius:9px;padding:8px 16px;font-weight:600}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn.big{padding:11px 26px;font-size:15px}
+.btn.ghost{background:transparent}
+.btn.danger{color:var(--bad);border-color:var(--bad)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.row.between{justify-content:space-between}
+.row.end{justify-content:flex-end;margin-top:10px}
+.chiprow{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.sessbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.chat{background:var(--panel);border:1px solid var(--border);border-radius:12px;height:44vh;min-height:300px;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.msg{display:flex;gap:8px;max-width:85%}
+.msg.client{align-self:flex-start}
+.msg.op{align-self:flex-end;flex-direction:row-reverse}
+.ava{width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.msg.op .ava{background:var(--ok)}
+.bub{background:var(--bubble-c);border:1px solid var(--border);border-radius:12px;padding:8px 12px;white-space:pre-wrap;box-shadow:var(--shadow)}
+.msg.client .bub{border-top-left-radius:3px}
+.msg.op .bub{background:var(--bubble-o);color:var(--bubble-o-text);border-color:var(--bubble-o);border-top-right-radius:3px}
+.typing{align-self:flex-start;color:var(--muted);font-size:12.5px;padding-left:40px;font-style:italic}
+.inputrow{margin-top:10px;display:flex;flex-direction:column;gap:8px}
+.tplchips{display:flex;gap:6px;flex-wrap:wrap}
+.tplchip{background:var(--accent-soft);border:1px dashed var(--accent);color:var(--text);border-radius:8px;padding:3px 10px;font-size:12px}
+textarea#answer{width:100%;resize:vertical;min-height:80px;border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-family:inherit;font-size:14px;background:var(--panel);color:var(--text)}
+textarea#answer:focus{outline:2px solid var(--accent)}
+.review h3{margin-top:0}
+.kchip{border-radius:8px;padding:3px 10px;font-size:12.5px;border:1px solid var(--border)}
+.kchip.ok{background:var(--ok);color:#fff;border-color:var(--ok)}
+.kchip.miss{opacity:.55}
+.refcard{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:8px;padding:10px 14px;white-space:pre-wrap}
+.chklist{display:flex;flex-direction:column;gap:6px}
+.chk{display:flex;gap:8px;align-items:flex-start;padding:6px 10px;border:1px solid var(--border);border-radius:8px;cursor:pointer}
+.chk:hover{border-color:var(--accent)}
+.chk input{margin-top:3px}
+.xpbrd{margin-top:12px;background:var(--accent-soft);border-radius:10px;padding:10px 14px;font-size:13.5px}
+.xpbrd .tot{font-size:17px;font-weight:700;color:var(--accent)}
+.xpbrd table{width:100%;border-collapse:collapse}
+.xpbrd td{padding:2px 0}
+.xpbrd td:last-child{text-align:right;font-weight:600}
+.result .totxp{font-size:26px;font-weight:800;color:var(--ok)}
+.scorewrap{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.scorebig{font-size:36px;font-weight:800;color:var(--accent);line-height:1}
+.scorebig span{font-size:16px;color:var(--muted);font-weight:600}
+.scoretab{border-collapse:collapse;font-size:13.5px}
+.scoretab td{padding:2px 12px 2px 0}
+.scoretab td:last-child{font-weight:700;text-align:right}
+.sgood{color:var(--ok)}
+.smid{color:var(--warn)}
+.sbad{color:var(--bad)}
+.grammbox{background:var(--accent-soft);border-radius:8px;padding:8px 12px;margin:8px 0}
+.badgegrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.badge{border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;font-size:12.5px}
+.badge .bic{font-size:26px}
+.badge.locked{opacity:.4;filter:grayscale(1)}
+.badge b{display:block;font-size:13px}
+.quest{border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:10px}
+.quest.done{border-color:var(--ok);background:color-mix(in srgb, var(--ok) 8%, transparent)}
+.quest .bar{margin:6px 0 3px}
+.themechip{background:var(--accent-soft);border:1px solid var(--border);border-radius:8px;padding:6px 12px;color:var(--text);font-weight:600}
+.themechip.sel{border-color:var(--accent);background:var(--accent);color:#fff}
+.themechip:disabled{opacity:.45;cursor:not-allowed}
+.tplitem{display:flex;gap:8px;align-items:flex-start;border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin-bottom:6px}
+.tplitem .tt{font-weight:700;font-size:13px}
+.tplitem .tx{white-space:pre-wrap;font-size:13px}
+input[type=text]{border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-family:inherit;font-size:13.5px;background:var(--panel);color:var(--text);width:100%}
+.chart{width:100%;height:auto}
+.chart .barrect{fill:var(--accent)}
+.chart .bval{font-size:9px;fill:var(--muted)}
+.chart .blab{font-size:9px;fill:var(--muted)}
+.statcards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.statcard{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;box-shadow:var(--shadow)}
+.statcard .v{font-size:22px;font-weight:800;color:var(--accent)}
+.statcard .l{font-size:12px;color:var(--muted)}
+.weakitem{margin-bottom:8px}
+.weakitem .bar{margin-top:3px}
+.history details{border:1px solid var(--border);border-radius:10px;padding:8px 12px;margin-bottom:8px}
+.history summary{cursor:pointer;font-size:13.5px}
+.histbody{border-top:1px dashed var(--border);margin-top:8px;padding-top:8px;font-size:13.5px}
+.histbody .lab{font-weight:700;font-size:12px;color:var(--muted);text-transform:uppercase;margin:8px 0 3px}
+.grouplab{font-weight:700;margin:14px 0 6px;color:var(--accent)}
+.phr{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px solid var(--border);border-radius:8px;padding:7px 12px;margin-bottom:6px;font-size:13.5px}
+.phr button{white-space:nowrap}
+.mist{counter-reset:none;border-left:4px solid var(--warn);background:var(--accent-soft);border-radius:0 8px 8px 0;padding:8px 12px;margin-bottom:8px;font-size:13.5px}
+.adminpanel,.kbpanel{margin-top:10px;background:var(--panel);border:1px dashed var(--accent);border-radius:12px;padding:12px}
+.ordercard{background:var(--accent-soft);border-radius:10px;padding:10px 12px;margin-top:8px}
+.ordercard table{width:100%;border-collapse:collapse;margin-top:4px}
+.ordercard td{border-top:1px solid var(--border);padding:4px 6px;font-size:13px;vertical-align:top}
+.ordercard td:first-child{color:var(--muted);width:95px;white-space:nowrap}
+.ordercard .ostat{font-weight:700;color:var(--warn)}
+.ordermiss{color:var(--bad);font-weight:700;margin-top:8px}
+.kbpanel input{margin-bottom:8px}
+.kbitem{border:1px solid var(--border);border-radius:8px;padding:7px 10px;margin-bottom:6px;overflow:hidden}
+.kbitem b{font-size:13.5px}
+.kbitem .kbcat{float:right;font-size:11px;color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:0 6px}
+.kbitem p{margin:3px 0 0}
+.rulegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px}
+#toasts{position:fixed;right:16px;bottom:16px;z-index:100;display:flex;flex-direction:column;gap:8px;max-width:340px}
+.toast{background:var(--panel);border:1px solid var(--accent);border-left:5px solid var(--accent);border-radius:10px;padding:10px 14px;box-shadow:0 4px 16px rgba(0,0,0,.18);font-size:13.5px;animation:slidein .3s}
+.toast.out{opacity:0;transition:opacity .4s}
+@keyframes slidein{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
+@media(max-width:860px){.catgrid{grid-template-columns:repeat(2,1fr)}.grid2,.grid3,.statcards{grid-template-columns:1fr}.msg{max-width:95%}}
+</style>
+</head>
+<body data-theme="light">
+<header>
+  <div class="wrap hdr">
+    <div class="logo">🛠 ТехноДім <small>· Support Trainer</small></div>
+    <div class="hspace"></div>
+    <span class="chip" id="hLevel">—</span>
+    <div class="xpwrap"><div class="bar"><div class="fill" id="hXpFill" style="width:0%"></div></div><span class="small muted" id="hXpText">0 XP</span></div>
+    <span class="chip" id="hStreak">🔥 0 дн.</span>
+  </div>
+</header>
+<div class="wrap">
+  <nav class="tabs">
+    <button class="tab active" data-tab="train">💬 Тренування</button>
+    <button class="tab" data-tab="assess">🧪 Тест</button>
+    <button class="tab" data-tab="shift">🕹 Зміна</button>
+    <button class="tab" data-tab="profile">🎯 Профіль</button>
+    <button class="tab" data-tab="stats">📊 Статистика</button>
+    <button class="tab" data-tab="guide">📚 Довідник</button>
+  </nav>
+</div>
+<main class="wrap">
+  <section id="tab-train" class="tabpane active"></section>
+  <section id="tab-assess" class="tabpane"></section>
+  <section id="tab-shift" class="tabpane"></section>
+  <section id="tab-profile" class="tabpane"></section>
+  <section id="tab-stats" class="tabpane"></section>
+  <section id="tab-guide" class="tabpane"></section>
+</main>
+<div id="toasts"></div>
+<script src="scenarios.js"></script>
+<script src="eng-mistakes.js"></script>
+<script>
+"use strict";
+/* ===== Support Trainer «ТехноДім». Уся логіка локальна, без бібліотек. ===== */
+var $ = function(sel){ return document.querySelector(sel); };
+var $$ = function(sel){ return Array.prototype.slice.call(document.querySelectorAll(sel)); };
+function esc(t){ return String(t).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function todayKey(){ var d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function daysAgoKey(n){ var d=new Date(); d.setDate(d.getDate()-n); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function fmtSec(s){ s=Math.max(0,Math.round(s)); return Math.floor(s/60)+":"+String(s%60).padStart(2,"0"); }
+function hashStr(str){ var h=7; for(var i=0;i<str.length;i++){ h=(h*31+str.charCodeAt(i))|0; } return Math.abs(h)||1; }
+function seededRand(seed){ var x=seed|0; return function(){ x=(x*1103515245+12345)&0x7fffffff; return x/0x7fffffff; }; }
+
+/* --- База сценаріїв: сценарії приходять зі scenarios.js і частин scenarios_01..12.js,
+       кожна частина робить window.SCENARIOS.push(...). Якщо якоїсь частини немає —
+       застосунок працює з тим, що вже завантажено. --- */
+if(!Array.isArray(window.SCENARIOS)) window.SCENARIOS = [];
+if(typeof window.s !== "function"){ window.s = function(id,cat,dfn,ct,first,follows,ref,keys,checks){ return {id:id,cat:cat,dfn:dfn,ct:ct,first:first,follows:follows,ref:ref,keys:keys,checks:checks}; }; }
+var CL = window.CHECKLIST || (window.CHECKLIST = {
+  G:"Є привітання та ввічливе звернення",
+  E:"Емпатія: визнано почуття й ситуацію клієнта",
+  A:"Є вибачення за незручності",
+  U:"Уточнено дані: № замовлення, ТТН, модель, дата",
+  R:"Дано конкретне рішення або точну інформацію",
+  N:"Означено наступний крок і терміни",
+  F:"Ввічливе прощання з пропозицією допомоги",
+  P:"Запропоновано альтернативу або вибір",
+  O:"Відповідь узгоджується з правилами ТехноДім",
+  D:"Відмову пояснено причиною, без сухого «ні»",
+  C:"Тон спокійний, без сперечань і виправдань",
+  B:"Ситуацію взято під особистий контроль",
+  W:"Подяковано за звернення або за терпіння",
+  K:"Надано реквізити, контакти чи посилання",
+  V:"Дані клієнта перевірено перед рішенням",
+  M:"Запропоновано додаткову цінність (бонус, сервіс)"
+});
+
+/* --- Категорії, типи клієнтів, теми --- */
+var CATS = [
+  {id:"доставка", icon:"🚚", short:"Доставка", unlock:1},
+  {id:"оплата", icon:"💳", short:"Оплата", unlock:1},
+  {id:"технічні питання", icon:"🔌", short:"Техніка", unlock:1},
+  {id:"зміна замовлення", icon:"✏️", short:"Замовлення", unlock:2},
+  {id:"повернення", icon:"🔄", short:"Повернення", unlock:3},
+  {id:"знижки", icon:"🏷️", short:"Знижки", unlock:4},
+  {id:"гарантія", icon:"🛡️", short:"Гарантія", unlock:5},
+  {id:"брак", icon:"⚠️", short:"Брак", unlock:6},
+  {id:"клієнт пише з помилками/суржиком", icon:"📝", short:"Суржик/помилки", unlock:7},
+  {id:"скарги", icon:"😟", short:"Скарги", unlock:9},
+  {id:"неввічливий клієнт", icon:"😠", short:"Неввічливі", unlock:12},
+  {id:"англомовний клієнт", icon:"🌍", short:"Англ. клієнти", unlock:15}
+];
+var CT = { "спокійний":"😌", "розгублений":"🤔", "злий":"😤", "поспішає":"⏱️", "торгується":"💰" };
+var THEMES = [
+  {id:"light", name:"Світла", unlock:1},
+  {id:"dark", name:"Темна", unlock:3},
+  {id:"sea", name:"Морська", unlock:6},
+  {id:"cream", name:"Кремова", unlock:9},
+  {id:"forest", name:"Лісова", unlock:12},
+  {id:"neon", name:"Неонова", unlock:16}
+];
+var GREETINGS = ["добрий день","доброго дня","добрий ранок","доброго ранку","добрий вечір","доброго вечора","вітаю","привіт","здрастуйте","здравствуйте","hello","good morning","good afternoon","good evening","hi ","hi!","hi,","dear","welcome"];
+var EMPATHY = ["вибач","перепрош","розумію","співчув","шкода","жаль","незручно","поділяю","сочувств","sorry","apologi","i understand","unfortunately","i see","that must be","frustrat"];
+var CAPS_OK = ["HDMI","ТТН","СМС","НП","СВЧ","ТЕН","УКР","ПОШТА","НОВА","ТЕХНОДІМ"];
+
+/* --- Стан у localStorage (Етап 5: schemaVersion, покрокова міграція, захист від втрат) --- */
+var LS = "technodimTrainer.v1";
+var LS_CORRUPT = LS + ".corrupt";      /* сирий рядок, якщо JSON зламаний або міграція впала */
+var SCHEMA = 2;
+var CORRUPT_MODE = false;              /* true — працюємо з тимчасовим станом, LS не перезаписуємо */
+function defaultState(){
+  return {version:2, schemaVersion:2, xp:0, streak:0, bestStreak:0, dayStreak:0, lastDay:null,
+    history:[], xpByDay:{}, doneByCat:{}, doneCount:0, totalSec:0,
+    fastCount:0, quick30:0, empathyCount:0, keysHits:0, keysPossible:0,
+    cleanCount:0, angryCount:0, engCount:0, catsTried:{}, questsDoneTotal:0,
+    badges:[], theme:"light", templates:[], tplSeq:1, quests:null,
+    demoUnlock:false, seenHint:false,
+    escStats:{required:0, missed:0, unnecessary:0, correct:0}};
+}
+/* Побудова стану з об'єкта: тільки додає поля, нічого не видаляє.
+   qa100 старим записам історії НЕ вигадуємо — вони лишаються без нього («до версії 2.0»). */
+function migrateState(o){
+  var v = (o && (o.schemaVersion || o.version)) || 1;
+  var s = Object.assign(defaultState(), o);
+  if (v < 2){
+    s.schemaVersion = 2; s.version = 2;
+    s.escStats = s.escStats || {required:0, missed:0, unnecessary:0, correct:0};
+  }
+  return s;
+}
+var LOAD_INFO = (function(){
+  var raw = null;
+  try { raw = localStorage.getItem(LS); } catch(e){}
+  if (raw == null) return { state: defaultState(), fresh: true };
+  var parsed = null, err = null;
+  try { parsed = JSON.parse(raw); } catch(e){ err = String(e); }
+  if (err || !parsed || typeof parsed !== "object"){
+    try { localStorage.setItem(LS_CORRUPT, raw); } catch(e2){}
+    return { state: defaultState(), corrupt: raw, corruptErr: err || "структура не об'єкт" };
+  }
+  var oldV = parsed.schemaVersion || parsed.version || 1;
+  var needs = oldV < SCHEMA;
+  var backupKey = LS + ".backup-v" + oldV;
+  if (needs){
+    var already = null;
+    try { already = localStorage.getItem(backupKey); } catch(e2){}
+    if (already == null){ try { localStorage.setItem(backupKey, raw); } catch(e3){} }   /* сирокопія — ніколи не перезаписується */
+  }
+  try {
+    return { state: migrateState(parsed), migratedFrom: needs ? oldV : null, backupKey: needs ? backupKey : null };
+  } catch(e){
+    try { localStorage.setItem(LS_CORRUPT, raw); } catch(e2){}
+    return { state: defaultState(), corrupt: raw, corruptErr: "помилка міграції: " + e };
+  }
+})();
+var S = LOAD_INFO.state;
+var CORRUPT_MODE = !!LOAD_INFO.corrupt;
+function save(){ if (CORRUPT_MODE) return; try{ localStorage.setItem(LS, JSON.stringify(S)); }catch(e){} }
+/* --- Рівні та прогресія --- */
+var MAXL = 25;
+function needFor(l){ return 60 + 15*l; }
+function levelInfo(xp){
+  var l = 1, rem = Math.max(0, xp|0);
+  while(l < MAXL && rem >= needFor(l)){ rem -= needFor(l); l++; }
+  return {level:l, into:rem, need:(l < MAXL ? needFor(l) : 0)};
+}
+function lvl(){ return levelInfo(S.xp).level; }
+function rankOf(l){ return l<=5 ? "Стажер" : l<=10 ? "Молодший оператор" : l<=15 ? "Оператор" : l<=20 ? "Старший оператор" : "Тімлід"; }
+function diffUnlock(){ var l = lvl(); return l>=12 ? 5 : l>=8 ? 4 : l>=4 ? 3 : 2; }
+function catUnlocked(c){ return S.demoUnlock || lvl() >= c.unlock; }
+
+/* --- Автоперевірки відповіді --- */
+var NEXTSTEP = ["напиш","повідомл","зв'яж","підскаж","підкаж","питанн","допомог","оформл","перевір","протягом","сьогодні","завтра","вечора","годин","хвилин","підтвердіт","скажіть","перевірте","гляньте","чекайте","очікуйт","готов","рекоменд","варіант","виріш","зроблю","зверніться","звертайтеся","i will","i'll","you will receive","you'll get","let me know","please send","within","we will"];
+function checkBasics(answers){
+  var text = answers.join(" ").trim();
+  var low = text.toLowerCase();
+  var greeting = GREETINGS.some(function(g){ return low.indexOf(g) !== -1; });
+  var words = text.split(/[\s.,!?;:()\[\]{}"'«»\-–—]+/).filter(Boolean);
+  var badCaps = words.filter(function(w){
+    return w.length >= 4 && !/\d/.test(w) && CAPS_OK.indexOf(w) === -1 && w === w.toUpperCase() && /[A-ZА-ЯЄІЇ]/.test(w);
+  });
+  var first = (answers[0]||"").trim();
+  var firstLow = first.toLowerCase();
+  var vy = low.indexOf("вам") !== -1 || low.indexOf("вас") !== -1 || low.indexOf("ваш") !== -1 ||
+    low.indexOf("могли б") !== -1 || low.indexOf("надайте") !== -1 || low.indexOf("надати") !== -1 ||
+    low.indexOf("прошу") !== -1 || low.indexOf("будьте ласк") !== -1 || low.indexOf("дякую") !== -1 ||
+    low.indexOf("будь ласка") !== -1 ||
+    low.indexOf("please") !== -1 || low.indexOf("could you") !== -1 || low.indexOf("would you") !== -1 ||
+    low.indexOf("thank you") !== -1 || low.indexOf("kindly") !== -1 ||
+    /(^|[\s,.;!?])ви([\s,.;!?]|$)/.test(low);
+  var sentence = firstWords(first) >= 5 || /[.!?]/.test(first);
+  var lastLow = ((answers[answers.length-1]||"")).toLowerCase();
+  var lastStep = lastLow.indexOf("?") !== -1 || NEXTSTEP.some(function(m){ return lastLow.indexOf(m) !== -1; });
+  return {greeting:greeting, caps:badCaps.length === 0, badCaps:badCaps,
+    len:text.length >= 40 && text.length <= 1500, chars:text.length,
+    vy:vy, sentence:sentence, lastStep:lastStep,
+    empathy:EMPATHY.some(function(e){ return low.indexOf(e) !== -1; })};
+}
+function firstWords(s){ return s.split(/[\s.,!?;:()"'«»\-–—]+/).filter(Boolean).length; }
+/* --- Автопорівняння з еталоном: ключові факти та заборонене --- */
+var FORBIDDEN = [
+  {l:"Випитування конфіденційних даних (CVV, пароль, пін-код, код із SMS)", s:["cvv","пін-код","код з смс","код із смс","скажіть пароль","назвіть пароль","який пароль","надішліть пароль","пароль від акаунта","пароль від кабінету"]},
+  {l:"Обіцянка точної години прибуття", s:["рівно о ","точно о ","рівно в ","гарантує годину","приїде рівно"]},
+  {l:"Грубість або звинувачення клієнта", s:["самі винні","сам винен","не істеріть","не кричіть","майте совість","безладдя влаштовуєте"]},
+  {l:"Обіцянка миттєвого повернення коштів поза правилами", s:["поверну за годину","повернення за годину","гроші за годину","поверну сьогодні ж"]},
+  {l:"Переведення спілкування в особисті контакти", s:["мій особистий","мій номер телефону","поке","давайте поза чатом"]}
+];
+function factsFor(scen){ return (window.KEYFACTS && window.KEYFACTS[scen.id]) || []; }
+/* --- Етап 1: прозора перевірка фактів без AI: нормалізація чисел, синоніми фраз,
+       заперечення (вікно ±4 слова в межах клозу), збіг лише в клозі з 3+ словами. --- */
+var NEGATORS = ["не","ні","немає","нема","без","ніхто","ніколи","нічого"];
+var NUM_WORDS = [[" п'ять "," 5 "],[" чотири "," 4 "],[" три "," 3 "],[" двох "," 2 "],[" два "," 2 "],[" дві "," 2 "],[" один "," 1 "],[" одна "," 1 "]];
+var PHRASE_SYNONYMS = [
+  ["номер посилки","ттн"],["номер відправлення","ттн"],["трек номер","ттн"],["трек-номер","ттн"],
+  ["стежитиму","проконтролюю"],["стежу за","проконтролюю"],["контролюватиму","проконтролюю"],
+  ["шостої вечора","18:00"],["о шостій вечора","18:00"],["до шостої","до 18:00"],
+  ["напишу вам","напишіть вам"],["напишемо вам","напишіть вам"],
+  ["2 тижні","14 днів"],["2 тижнів","14 днів"],["2 тижня","14 днів"],["тиждень","7 днів"]
+];
+function normalizeAnswerText(low){
+  var t = " " + String(low).replace(/[’`]/g,"'").replace(/[«»"()]/g," ").replace(/\s+/g," ").trim() + " ";
+  for (var i = 0; i < NUM_WORDS.length; i++) t = t.split(NUM_WORDS[i][0]).join(NUM_WORDS[i][1]);
+  t = t.replace(/[–—]/g,"-");
+  for (var j = 0; j < PHRASE_SYNONYMS.length; j++) t = t.split(PHRASE_SYNONYMS[j][0]).join(PHRASE_SYNONYMS[j][1]);
+  return t;
+}
+function stemEvidence(stem, norm){
+  var s = String(stem).toLowerCase().replace(/[–—]/g,"-");
+  if (s.indexOf("не ") === 0) { var lit = norm.indexOf(s) !== -1; return { literal:true, pos: lit?1:0, neg:0, none: !lit }; }
+  var isGreeting = GREETINGS.some(function(g){ return s.indexOf(g) === 0; });
+  var sentences = norm.split(/[.!?]+/);
+  var pos = 0, neg = 0;
+  for (var i = 0; i < sentences.length; i++){
+    var sentence = sentences[i];
+    var sentenceWords = sentence.split(/\s+/).filter(Boolean).length;
+    var clauses = sentence.split(/[,;]+/);
+    for (var k = 0; k < clauses.length; k++){
+      var clause = clauses[k];
+      var idx = clause.indexOf(s);
+      while (idx !== -1){
+        var before = clause.slice(0, idx).trim().split(/\s+/).filter(Boolean);
+        var after = clause.slice(idx + s.length).trim().split(/\s+/).filter(Boolean);
+        var negated = false;
+        for (var d = 1; d <= 4 && !negated; d++){
+          if (before.length >= d && NEGATORS.indexOf(before[before.length - d]) !== -1) negated = true;
+          else if (after.length >= d && NEGATORS.indexOf(after[d - 1]) !== -1) negated = true;
+        }
+        /* доказ: речення ≥3 слів АБО клоз із числом 3+ цифр (номер замовлення/ТТН/сума) */
+        if (negated) neg++;
+        else if (isGreeting || sentenceWords >= 3 || /\d{3,}/.test(clause)) pos++;
+        idx = clause.indexOf(s, idx + s.length);
+      }
+    }
+  }
+  return { literal:false, pos: pos, neg: neg, none: (pos + neg) === 0 };
+}
+function analyzeFacts(scen, answers, refNorm){
+  var list = factsFor(scen);
+  var norm = normalizeAnswerText(answers.join("\n").toLowerCase());
+  var rnorm = refNorm != null ? refNorm : normalizeAnswerText(String(scen.ref || "").toLowerCase());
+  var out = [], contradictions = 0, shortOnly = 0;
+  list.forEach(function(f){
+    var hit = false, opposite = 0, foundStems = 0, shortStems = 0;
+    (f.s || []).forEach(function(st){
+      var e = stemEvidence(st, norm);
+      var r = stemEvidence(st, rnorm);
+      /* полярність факту бере еталон: якщо в еталоні стем лише заперечений — у відповіді теж має бути заперечення */
+      var expectNeg = !e.literal && r.neg > 0 && r.pos === 0;
+      var stemHit = e.literal ? e.pos > 0 : (expectNeg ? e.neg > 0 : e.pos > 0);
+      if (stemHit) hit = true;
+      if (!e.literal && (e.pos + e.neg) > 0){
+        foundStems++;
+        if (!stemHit){
+          if (expectNeg && e.pos > 0 && e.neg === 0) opposite++;
+          else if (!expectNeg && e.neg > 0 && e.pos === 0) opposite++;
+          else shortStems++;
+        }
+      }
+    });
+    if (!hit && foundStems > 0){
+      if (opposite > 0) contradictions++;
+      else if (shortStems > 0) shortOnly++;
+    }
+    out.push({l:f.l, hit:hit});
+  });
+  var hits = out.filter(function(f){ return f.hit; }).length;
+  return {list:out, pct: out.length ? Math.round(hits/out.length*100) : 100,
+          contradictions: contradictions, shortOnly: shortOnly};
+}
+function checkForbidden(answers){
+  var low = answers.join("\n").toLowerCase();
+  return FORBIDDEN.filter(function(f){ return f.s.some(function(st){ return low.indexOf(st) !== -1; }); });
+}
+/* Сміття — ЛИШЕ за формою: менше 2 реальних слів, жодної голосної,
+   або більшість слів — набір літер (4+ приголосних підряд, фрагмент ряду клавіатури 4+,
+   повтор складу, подвоєна приголосна). */
+var KEYBOARD_ROWS = ["qwertyuiop","asdfghjkl","zxcvbnm","йцукенгшщзхї","фівапролджє","ячсмитьбю"];
+function isSaladWord(w){
+  if(!/[аеєиіїоуюяaeiouy]/i.test(w)) return true;
+  var lw = w.toLowerCase();
+  if(/[бвгґджзйклмнпрстфхцчшщ]{4,}/.test(lw)) return true;
+  if(/[bcdfghjklmnpqrstvwxz]{4,}/.test(lw)) return true;
+  for(var r = 0; r < KEYBOARD_ROWS.length; r++){
+    var row = KEYBOARD_ROWS[r];
+    for(var p = 0; p + 4 <= row.length; p++){
+      if(lw.indexOf(row.substr(p, 4)) !== -1) return true;
+    }
+  }
+  if(/(.{2,3})\1/.test(lw)) return true;
+  if(/([бвгґджзйклмнпрстфхцчшщ])\1\1/.test(lw)) return true;
+  var dbl = lw.match(/([бвгґджзйклмнпрстфхцчшщ])\1/);
+  if(dbl && lw.length >= 5){
+    var vowels = (lw.match(/[аеєиіїоуюяaeiouy]/g) || []).length;
+    if(vowels < 2) return true;
+  }
+  return false;
+}
+function isGarbage(answers){
+  var text = (answers||[]).join(" ").trim();
+  if(!text) return true;
+  var words = text.split(/[^A-Za-zА-Яа-яЄєІіЇїҐґ’’]+/).filter(function(w){ return w.length >= 2; });
+  if(words.length < 2) return true;
+  if(!/[аеєиіїоуюяaeiouy]/i.test(text)) return true;
+  var salad = words.filter(isSaladWord).length;
+  return salad > words.length / 2;
+}
+function calcXP(scen, ctx){
+  var factPct = (ctx.factPct == null) ? 100 : ctx.factPct;
+  if(ctx.garbage){
+    /* Сміття за формою — 0 XP, оцінка 1/10, серія скидається. */
+    return {base:0, speed:0, dialog:0, basic:0, keys:0, cl:0, factPct:factPct, factXP:0,
+      forb:0, orderAdj:0, noAns:0, sum:0, mult:1, total:0, counted:false, garbage:true, weak:false};
+  }
+  if(factPct < 20){
+    /* Слабка відповідь: 1–5 XP за ввічливість і грамотність, без бонусів; серія НЕ скидається. */
+    var weakXP = 1 + Math.round(((ctx.scorePolite||0) + (ctx.scoreLiteracy||0))/20*4);
+    weakXP = Math.max(1, Math.min(5, weakXP));
+    return {base:0, speed:0, dialog:0, basic:0, keys:0, cl:0, factPct:factPct, factXP:0,
+      forb:0, orderAdj:0, noAns:0, sum:weakXP, mult:1, total:weakXP, counted:false, garbage:false, weak:true};
+  }
+  var capped = ctx.scoreCapped || false;   /* Етап 3 правка: спрацювала стеля оцінки — множники і бонуси вимкнено */
+  var base = factPct >= 50 ? scen.dfn * 10 : 0;   /* 20–49%: без стандартних бонусів */
+  var speed = (!capped && factPct >= 50) ? (ctx.sec <= 30 ? 25 : (ctx.sec <= 60 ? 15 : 0)) : 0;
+  var dialog = (!capped && factPct >= 50 && ctx.nAnswers >= 1 + scen.follows.length) ? 10 : 0;
+  var b = ctx.basic || {};
+  var basicPassed = (b.greeting?1:0) + (b.caps?1:0) + (b.len?1:0) + (b.vy?1:0) + (b.lastStep?1:0);
+  var basicXP = basicPassed * 4;
+  var keys = (ctx.keysFound||0) * 2;
+  var cl = (ctx.checked||0) * 5;
+  var factXP = factPct >= 50 ? Math.round(factPct/2) : 0;
+  var forb = -Math.min(2, ctx.forbidden||0) * 10;
+  var orderAdj = capped ? Math.min(0, ctx.orderAdj || 0) : (ctx.orderAdj || 0);
+  var noAns = ctx.noAnswer ? -15 : 0;
+  var escBonus = (!capped) ? (ctx.escBonus || 0) : 0;   /* Етап 3: бонус лише за правильну ескалацію обов'язкового сценарію */
+  var sum = base + speed + dialog + basicXP + keys + cl + factXP + forb + orderAdj + noAns + escBonus;
+  var total = Math.round(sum * (capped ? 1 : (ctx.mult||1)));
+  var counted = factPct >= 50;
+  if(!counted) total = Math.max(0, Math.min(total, 5));
+  if (ctx.missedEsc) total = Math.round(total * 0.5);   /* пропущена обов'язкова ескалація — ≤~50% XP */
+  return {base:base, speed:speed, dialog:dialog, basic:basicXP, keys:keys, cl:cl,
+    factPct:factPct, factXP:factXP, forb:forb, orderAdj:orderAdj, noAns:noAns, escBonus:escBonus,
+    sum:sum, mult:ctx.mult||1, total:total, counted:counted, garbage:false, weak:false};
+}
+
+/* --- Щоденні квести --- */
+function questLabel(q){
+  switch(q.type){
+    case "count": return "Пройди " + q.target + " сценаріїв будь-яких категорій";
+    case "xp": return "Зароби " + q.target + " XP за день";
+    case "cat": return "Пройди " + q.target + " сценарії категорії «" + q.param + "»";
+    case "greet": return "Дай " + q.target + " відповіді з привітанням (автоперевірка)";
+    case "empathy": return "Дай " + q.target + " відповіді з емпатією (автоперевірка)";
+    case "fast": return q.target + " відповіді швидше ніж за 60 с";
+    case "keys": return "Влуч у " + q.target + " ключових слів сумарно";
+    case "clean": return "Дай " + q.target + " відповіді без порушень базових правил";
+  }
+  return q.type;
+}
+function genQuests(dateKey){
+  var rnd = seededRand(hashStr("q" + dateKey));
+  var types = ["count","xp","cat","greet","empathy","fast","keys","clean"];
+  var pool = types.slice();
+  for(var i = pool.length-1; i > 0; i--){ var j = Math.floor(rnd()*(i+1)); var t = pool[i]; pool[i] = pool[j]; pool[j] = t; }
+  var okCats = CATS.filter(catUnlocked).map(function(c){ return c.id; });
+  return pool.slice(0,3).map(function(t){
+    if(t === "count") return {type:t, target:3+Math.floor(rnd()*4), reward:50};
+    if(t === "xp") return {type:t, target:80+Math.floor(rnd()*4)*20, reward:60};
+    if(t === "cat") return {type:t, target:2+Math.floor(rnd()*2), param:okCats[Math.floor(rnd()*okCats.length)] || "доставка", reward:55};
+    if(t === "greet") return {type:t, target:3, reward:45};
+    if(t === "empathy") return {type:t, target:3, reward:45};
+    if(t === "fast") return {type:t, target:2, reward:50};
+    if(t === "keys") return {type:t, target:8+Math.floor(rnd()*3)*2, reward:50};
+    return {type:"clean", target:3, reward:55};
+  }).map(function(q){ q.prog = 0; q.done = false; return q; });
+}
+function ensureQuests(){
+  var t = todayKey();
+  if(!S.quests || S.quests.date !== t){ S.quests = {date:t, list:genQuests(t)}; save(); }
+}
+function updateQuests(ev){
+  if(!S.quests) return;
+  S.quests.list.forEach(function(q){
+    if(q.done) return;
+    var hit = false;
+    switch(q.type){
+      case "count": hit = true; break;
+      case "xp": q.prog += ev.total; break;
+      case "cat": hit = (ev.cat === q.param); break;
+      case "greet": hit = ev.checks.greeting; break;
+      case "empathy": hit = ev.checks.empathy; break;
+      case "fast": hit = (ev.sec <= 60); break;
+      case "keys": q.prog += ev.keysFound; break;
+      case "clean": hit = (ev.checks.greeting && ev.checks.caps && ev.checks.len); break;
+    }
+    if(hit) q.prog += 1;
+    if(q.prog >= q.target){
+      q.done = true;
+      S.questsDoneTotal = (S.questsDoneTotal||0) + 1;
+      S.xp += q.reward;
+      S.xpByDay[todayKey()] = (S.xpByDay[todayKey()]||0) + q.reward;
+      toast("🎯 Квест виконано: " + questLabel(q) + " (+" + q.reward + " XP)");
+    }
+  });
+}
+
+/* --- Бейджі --- */
+var BADGES = [
+  {id:"first", icon:"🎬", name:"Перший контакт", desc:"Пройди перший сценарій", cond:function(s){return s.doneCount>=1;}},
+  {id:"ten", icon:"🔟", name:"Десятка", desc:"10 сценаріїв", cond:function(s){return s.doneCount>=10;}},
+  {id:"fifty", icon:"🏅", name:"Пів сотні", desc:"50 сценаріїв", cond:function(s){return s.doneCount>=50;}},
+  {id:"hundred", icon:"💯", name:"Сотня", desc:"100 сценаріїв", cond:function(s){return s.doneCount>=100;}},
+  {id:"streak5", icon:"🔥", name:"Серія ×5", desc:"5 правильних відповідей підряд", cond:function(s){return s.bestStreak>=5;}},
+  {id:"streak10", icon:"🌋", name:"Серія ×10", desc:"10 правильних відповідей підряд", cond:function(s){return s.bestStreak>=10;}},
+  {id:"speed", icon:"⚡", name:"Блискавка", desc:"Відповідь швидше ніж за 30 с", cond:function(s){return (s.quick30||0)>=1;}},
+  {id:"speedster", icon:"🏎️", name:"Гонщик", desc:"10 відповідей швидше ніж за 60 с", cond:function(s){return s.fastCount>=10;}},
+  {id:"empath", icon:"💛", name:"Емпат", desc:"10 відповідей з емпатією", cond:function(s){return s.empathyCount>=10;}},
+  {id:"keys50", icon:"🎯", name:"Снайпер слів", desc:"50 збігів ключових слів", cond:function(s){return s.keysHits>=50;}},
+  {id:"lvl5", icon:"🎓", name:"Випускник стажування", desc:"Досягни 5-го рівня", cond:function(){return lvl()>=5;}},
+  {id:"lvl10", icon:"🎖️", name:"Молодший оператор", desc:"Досягни 10-го рівня", cond:function(){return lvl()>=10;}},
+  {id:"lvl15", icon:"🎗️", name:"Оператор", desc:"Досягни 15-го рівня", cond:function(){return lvl()>=15;}},
+  {id:"lvl20", icon:"🛡️", name:"Старший оператор", desc:"Досягни 20-го рівня", cond:function(){return lvl()>=20;}},
+  {id:"lvl25", icon:"👑", name:"Тімлід", desc:"Досягни 25-го рівня", cond:function(){return lvl()>=25;}},
+  {id:"polyglot", icon:"🌍", name:"Поліглот", desc:"5 розмов з англомовними клієнтами", cond:function(s){return s.engCount>=5;}},
+  {id:"fire", icon:"🧯", name:"Пожежник", desc:"5 розмов із злим клієнтом", cond:function(s){return s.angryCount>=5;}},
+  {id:"allcats", icon:"🗺️", name:"Всі напрямки", desc:"Спробуй усі 12 категорій", cond:function(s){return Object.keys(s.catsTried).length>=12;}},
+  {id:"quester", icon:"🎪", name:"Квестмен", desc:"Виконай 3 щоденні квести", cond:function(s){return (s.questsDoneTotal||0)>=3;}},
+  {id:"week", icon:"📅", name:"Тиждень у строю", desc:"7 днів підряд із тренуваннями", cond:function(s){return s.dayStreak>=7;}},
+  {id:"month", icon:"🗓️", name:"Місяць у строю", desc:"30 днів підряд із тренуваннями", cond:function(s){return s.dayStreak>=30;}},
+  {id:"author", icon:"✍️", name:"Автор шаблонів", desc:"Створи 3 власні шаблони", cond:function(s){return s.templates.length>=3;}},
+  {id:"clean10", icon:"🧼", name:"Чистюля", desc:"10 відповідей без жодного порушення", cond:function(s){return s.cleanCount>=10;}}
+];
+function checkBadges(){
+  BADGES.forEach(function(b){
+    if(S.badges.indexOf(b.id) === -1 && b.cond(S)){
+      S.badges.push(b.id);
+      toast(b.icon + " Новий бейдж: " + b.name);
+    }
+  });
+}
+
+/* --- Тости, шапка, вкладки, тема --- */
+function toast(msg){
+  var t = document.createElement("div");
+  t.className = "toast";
+  t.textContent = msg;
+  $("#toasts").appendChild(t);
+  setTimeout(function(){ t.classList.add("out"); setTimeout(function(){ t.remove(); }, 450); }, 3800);
+}
+function applyTheme(){ document.body.dataset.theme = S.theme || "light"; }
+function renderHeader(){
+  var li = levelInfo(S.xp);
+  $("#hLevel").textContent = rankOf(li.level) + " · рів. " + li.level;
+  $("#hXpFill").style.width = (li.need ? Math.round(li.into/li.need*100) : 100) + "%";
+  $("#hXpText").textContent = S.xp + " XP" + (li.need ? " (до рів. " + (li.level+1) + ": " + (li.need - li.into) + ")" : " — максимум!");
+  $("#hStreak").textContent = "🔥 " + S.dayStreak + " дн.";
+}
+function switchTab(name){
+  $$(".tab").forEach(function(b){ b.classList.toggle("active", b.dataset.tab === name); });
+  $$(".tabpane").forEach(function(p){ p.classList.toggle("active", p.id === "tab-" + name); });
+  if(name === "train") renderTrain();
+  if(name === "assess" && window.Assessment) window.Assessment.render();
+  if(name === "shift" && window.Shift) window.Shift.render();
+  if(name === "profile") renderProfile();
+  if(name === "stats") renderStats();
+  if(name === "guide") renderGuide();
+}
+/* ===== Режим тренування ===== */
+var T = null;               /* активна сесія: {scen, answers, t0, phase, sec, basic, keysFound, result} */
+var pick = {cat:null, diff:0};
+var timerId = null;
+
+function scenBy(cat, diff){
+  return window.SCENARIOS.filter(function(x){ return x.cat === cat && (!diff || x.dfn === diff); });
+}
+function availableScen(cat){
+  var du = diffUnlock();
+  return window.SCENARIOS.filter(function(x){ return x.cat === cat && x.dfn <= du; });
+}
+function stars(d){ var r = ""; for(var i=1;i<=5;i++) r += i<=d ? "★" : "☆"; return r; }
+
+function renderTrain(){
+  if(T && (T.phase === "chat" || T.phase === "typing")) renderSession();
+  else if(T && (T.phase === "review" || T.phase === "done")) renderReview();
+  else renderPicker();
+}
+
+/* --- Вибір категорії --- */
+function renderPicker(){
+  ensureQuests();
+  var du = diffUnlock();
+  var totalAvail = 0;
+  CATS.forEach(function(c){ totalAvail += availableScen(c.id).length; });
+  var html = '<div class="row between"><h2>Оберіть категорію тренування</h2>' +
+    '<div class="row"><button class="btn' + (pick.english ? " primary" : "") + '" id="engShiftBtn">🇬🇧 English shift: ' + (pick.english ? "увімкнено" : "вимкнено") + '</button>' +
+    '<button class="btn primary" id="quickStart" style="margin-left:8px">⚡ Швидкий старт</button></div></div>';
+  var engHist = S.history.filter(function(h){ return h.cat === "англомовний клієнт"; });
+  var engQa = engHist.length ? Math.round(engHist.reduce(function(a,h){ return a + (h.qa100 || 0); }, 0) / engHist.length) : null;
+  if (pick.english) html += '<p class="muted small">🇬🇧 Англійська практика: тікетів пройдено — <b>' + engHist.length + '</b>' + (engQa != null ? ' · середній QA — <b>' + engQa + '/100</b>' : '') + ' (навчальна симуляція).</p>';
+  html += '<p class="muted small">База сценаріїв: ' + window.SCENARIOS.length + ' шт, доступно за вашим рівнем: ' + totalAvail +
+    '. Частин сценаріїв завантажено: ' + (window.PARTS_LOADED||0) + ' з 12.' +
+    ((window.PARTS_MISSING||[]).length ? ' Ще не створені частини: scenarios_' + window.PARTS_MISSING.map(function(n){ return String(n).padStart(2,"0"); }).join(", scenarios_") + '.js — додасте файли, і вони підхопляться при наступному відкритті.' : '') + '</p>';
+  html += '<div class="catgrid">';
+  CATS.forEach(function(c){
+    if (pick.english && c.id !== "англомовний клієнт") return;
+    var un = catUnlocked(c);
+    var n = scenBy(c.id).length;
+    html += '<button class="catcard' + (un?'':' locked') + (pick.cat===c.id?' sel':'') + '" data-cat="' + esc(c.id) + '">' +
+      (un ? '' : '<span class="lock">🔒 рів. ' + c.unlock + '</span>') +
+      '<span class="cicon">' + c.icon + '</span>' +
+      '<span class="cname">' + esc(c.short) + '</span>' +
+      '<span class="ccount">' + n + ' сценар. · пройдено ' + (S.doneByCat[c.id]||0) + '</span></button>';
+  });
+  html += '</div>';
+  if(pick.cat){
+    var list = scenBy(pick.cat).filter(function(x){ return x.dfn <= du; });
+    html += '<div class="card" style="margin-top:14px"><h3>' + esc(pick.cat) + '</h3>' +
+      '<p class="muted small">Доступно сценаріїв: ' + list.length + '. Оберіть складність (складніша відкривається з рівнем):</p><div class="chiprow">';
+    html += '<button class="chip' + (pick.diff===0?' ok':'') + '" data-d="0">Будь-яка</button>';
+    for(var d=1; d<=5; d++){
+      var nD = scenBy(pick.cat, d).length;
+      var locked = d > du;
+      html += '<button class="chip' + (pick.diff===d?' ok':'') + '" data-d="' + d + '"' + (locked?' style="opacity:.45"':'') + '>' +
+        (locked ? '🔒 ' : '') + d + ' ★ (' + nD + ')</button>';
+    }
+    html += '</div><div class="row end"><button class="btn primary big" id="startBtn">▶ Почати сценарій</button></div></div>';
+  }
+  html += '<div class="card"><h3>💡 Як це працює</h3><p class="small muted">Клієнт пише вам у чат — відповідайте, як справжній оператор. Таймер рахує час відповіді. Коли діалог завершено — натисніть «Закрити тікет»: ви побачите еталон сильного оператора, чекліст для самооцінки та автоперевірку ключових слів. Якщо закрити тікет, коли клієнт чекає відповідь, — штраф −15 XP. XP нараховується за чекліст, швидкість (до 60 с — бонус), складність і серію правильних відповідей. Прогрес зберігається у вашому браузері автоматично.</p></div>';
+  $("#tab-train").innerHTML = html;
+  $$("#tab-train .catcard").forEach(function(b){
+    b.addEventListener("click", function(){
+      var id = b.dataset.cat;
+      var c = CATS.filter(function(x){ return x.id === id; })[0];
+      if(!c || !catUnlocked(c)){ toast("🔒 Категорія відкриється на " + (c ? c.unlock : "?") + "-му рівні"); return; }
+      pick.cat = id; renderPicker();
+    });
+  });
+  $$("#tab-train [data-d]").forEach(function(b){
+    b.addEventListener("click", function(){
+      var d = +b.dataset.d;
+      if(d > diffUnlock()){ toast("🔒 Складність " + d + " відкриється пізніше"); return; }
+      pick.diff = d; renderPicker();
+    });
+  });
+  var qs = $("#quickStart");
+  if(qs) qs.addEventListener("click", function(){
+    var okCats = CATS.filter(catUnlocked);
+    if(!okCats.length){ toast("Ще немає доступних сценаріїв — додайте файли частин"); return; }
+    pick.cat = okCats[Math.floor(Math.random()*okCats.length)].id;
+    pick.diff = 0;
+    startScenario();
+  });
+  var esb = $("#engShiftBtn");
+  if(esb) esb.addEventListener("click", function(){
+    pick.english = !pick.english;
+    if (pick.english) pick.cat = "англомовний клієнт";
+    else if (pick.cat === "англомовний клієнт") pick.cat = null;
+    renderPicker();
+  });
+  var st = $("#startBtn");
+  if(st) st.addEventListener("click", startScenario);
+}
+
+function startScenario(){
+  var du = diffUnlock();
+  var list = scenBy(pick.cat, pick.diff).filter(function(x){ return x.dfn <= du; });
+  if(!list.length){ toast("Немає доступних сценаріїв із цим фільтром"); return; }
+  var scen = list[Math.floor(Math.random()*list.length)];
+  T = {scen:scen, answers:[], t0:Date.now(), phase:"chat", sec:0, basic:null, keysFound:[], result:null,
+    chatLog:[{who:"client", text:scen.first}], qi:0, hold:false, noAnswerClose:false};
+  renderSession();
+  startTimer();
+}
+
+/* --- Сесія: чат + введення --- */
+function scrollChat(){ var c = $("#chat"); if(c) c.scrollTop = c.scrollHeight; }
+function pushClient(text){
+  var c = $("#chat"); if(!c) return;
+  c.insertAdjacentHTML("beforeend", '<div class="msg client"><div class="ava">К</div><div class="bub">' + esc(text) + '</div></div>');
+  scrollChat();
+}
+function pushOp(text){
+  var c = $("#chat"); if(!c) return;
+  c.insertAdjacentHTML("beforeend", '<div class="msg op"><div class="ava">Ви</div><div class="bub">' + esc(text) + '</div></div>');
+  scrollChat();
+}
+function renderSession(){
+  var sc = T.scen;
+  var html = '<div class="sessbar">' +
+    '<button class="btn ghost" id="backBtn">← До категорій</button>' +
+    '<span class="chip cat">' + esc(sc.cat) + '</span>' +
+    '<span class="chip">' + stars(sc.dfn) + '</span>' +
+    '<span class="chip">' + (CT[sc.ct]||"🙂") + ' ' + esc(sc.ct) + '</span>' +
+    '<span class="chip" id="tTimer">⏱ 0:00</span>' +
+    '<button class="btn ghost" id="adminBtn">🗂 Адмінка</button>' +
+    '<button class="btn ghost" id="kbBtn">📚 База знань</button>' +
+    '<button class="btn ghost" id="escBtn">⬆ Ескалювати</button>' +
+    '<button class="btn danger ghost" id="skipBtn">Пропустити</button></div>' +
+    '<div class="chat" id="chat"></div>' +
+    '<div id="adminPanel" class="adminpanel" style="display:none"><div class="row">' +
+    '<input type="text" id="orderInput" placeholder="Номер замовлення, напр. 24012" style="flex:1">' +
+    '<button class="btn primary" id="findOrderBtn">Знайти</button></div>' +
+    '<div id="orderResult"></div></div>' +
+    '<div id="kbPanel" class="kbpanel" style="display:none">' +
+    '<input type="text" id="kbInput" placeholder="Пошук по правилах: доставка, повернення, післяплата, гарантія…">' +
+    '<div id="kbResults"></div></div>' +
+    '<div id="escPanel" class="adminpanel" style="display:none">' +
+    '<div class="row"><select id="escDept" style="flex:1"></select>' +
+    '<select id="escPrio" style="width:170px"></select></div>' +
+    '<textarea id="escNote" rows="3" style="width:100%;margin-top:6px" placeholder="Внутрішня нотатка для відділу: № замовлення, суть проблеми, що вже зроблено. Клієнт її не бачить."></textarea>' +
+    '<div class="row end" style="margin-top:6px"><button class="btn primary" id="escConfirm">Підтвердити ескалацію</button></div>' +
+    '<p class="small muted">Нотатка службова — клієнт її не бачить. Після ескалації обов\'язково напишіть клієнту, що питання передано і коли чекати відповідь, — інакше мінус у Next Steps.</p></div>' +
+    '<div class="inputrow" id="inputRow">' +
+    '<div class="tplchips" id="tplChips"></div>' +
+    '<textarea id="answer" rows="3" placeholder="Напишіть відповідь клієнту… (Ctrl+Enter — відправити)"></textarea>' +
+    '<div class="row end"><button class="btn" id="closeTicketBtn">🔒 Закрити тікет</button>' +
+    '<button class="btn primary big" id="sendBtn" style="margin-left:8px">Відправити</button></div></div>';
+  $("#tab-train").innerHTML = html;
+  (T.chatLog || [{who:"client", text:sc.first}]).forEach(function(m){
+    if(m.who === "client") pushClient(m.text); else pushOp(m.text);
+  });
+  var ta = $("#answer");
+  ta.addEventListener("keydown", function(e){ if((e.ctrlKey||e.metaKey) && e.key === "Enter"){ e.preventDefault(); sendAnswer(); } });
+  $("#sendBtn").addEventListener("click", sendAnswer);
+  $("#closeTicketBtn").addEventListener("click", closeTicket);
+  $("#skipBtn").addEventListener("click", skipScenario);
+  $("#backBtn").addEventListener("click", skipScenario);
+  $("#adminBtn").addEventListener("click", function(){ togglePanel("admin"); });
+  $("#kbBtn").addEventListener("click", function(){ togglePanel("kb"); });
+  $("#escBtn").addEventListener("click", function(){ togglePanel("esc"); });
+  (function(){
+    var escSel = $("#escDept"), prioSel = $("#escPrio");
+    var depts = (window.Escalation && window.Escalation.DEPTS) || [];
+    var prios = (window.Escalation && window.Escalation.PRIORITIES) || [];
+    depts.forEach(function(d){ var o = document.createElement("option"); o.value = d; o.textContent = "відділ: " + d; escSel.appendChild(o); });
+    prios.forEach(function(p){ var o = document.createElement("option"); o.value = p; o.textContent = "пріоритет: " + p; prioSel.appendChild(o); });
+    if (T.escalation){ escSel.value = T.escalation.dept; prioSel.value = T.escalation.priority; $("#escNote").value = T.escalation.note || ""; }
+    $("#escConfirm").addEventListener("click", function(){
+      T.escalation = { dept: $("#escDept").value, priority: $("#escPrio").value, note: $("#escNote").value, atAnswerIndex: T.answers.length };
+      $("#escPanel").style.display = "none";
+      $("#escBtn").textContent = "⬆ Ескальовано: " + T.escalation.dept;
+      toast("Ескалацію зареєстровано. Напишіть клієнту, що питання передано і коли чекати відповідь.");
+    });
+  })();
+  $("#findOrderBtn").addEventListener("click", findOrder);
+  $("#orderInput").addEventListener("keydown", function(e){ if(e.key === "Enter") findOrder(); });
+  $("#kbInput").addEventListener("input", function(){ renderKBList($("#kbInput").value); });
+  renderTplChips();
+  scrollChat();
+}
+function renderTplChips(){
+  var box = $("#tplChips"); if(!box) return;
+  var l = lvl();
+  if(l < 4){ box.innerHTML = '<span class="small muted">🔒 Власні шаблони відповідей відкриються на 4-му рівні</span>'; return; }
+  if(!S.templates.length){ box.innerHTML = '<span class="small muted">Створіть шаблони швидких відповідей у вкладці «Профіль»</span>'; return; }
+  box.innerHTML = S.templates.map(function(t, i){
+    return '<button class="tplchip" data-tpl="' + i + '">📄 ' + esc(t.title) + '</button>';
+  }).join("");
+  $$("#tplChips .tplchip").forEach(function(b){
+    b.addEventListener("click", function(){
+      var t = S.templates[+b.dataset.tpl];
+      var ta = $("#answer");
+      if(ta){ ta.value = (ta.value ? ta.value + "\n" : "") + t.text; ta.focus(); }
+    });
+  });
+}
+function startTimer(){
+  if(timerId) return;
+  timerId = setInterval(function(){
+    if(!T || T.phase === "done") return;
+    var s = Math.round((Date.now() - T.t0)/1000);
+    var el = $("#tTimer");
+    if(el) el.textContent = "⏱ " + fmtSec(s);
+  }, 1000);
+}
+function stopTimer(){ if(timerId){ clearInterval(timerId); timerId = null; } }
+
+function sendAnswer(){
+  if(!T || T.phase !== "chat") return;
+  var ta = $("#answer"); if(!ta) return;
+  var text = ta.value.trim();
+  if(!text){ toast("Спочатку напишіть відповідь клієнту"); return; }
+  T.answers.push(text);
+  pushOp(text);
+  logChat("op", text);
+  ta.value = "";
+  clientReact();
+}
+
+/* --- Поведінка клієнта: черга = заплановані репліки + фінальна «Дякую, зрозумів».
+   Після фінальної клієнт мовчить. finishToReview() викликає лише closeTicket(). --- */
+var FINAL_CLIENT_MSG = "Дякую, зрозумів";
+var WAIT_CLIENT_MSG = "Добре, чекаю";
+function logChat(who, text){ if(T) T.chatLog.push({who:who, text:text}); }
+function clientQueue(){ return T.scen.follows.concat([FINAL_CLIENT_MSG]); }
+function hasWaitingPhrase(text){
+  var low = (text||"").toLowerCase();
+  return ["хвилинку","хвилиночку","уточню","уточняю","перевірю","перевіряю","зачекайте","подивлюсь","подивлюся"]
+    .some(function(w){ return low.indexOf(w) !== -1; });
+}
+/* Утримання = фраза очікування без конкретики (номерів замовлень, сум). */
+function isHoldMsg(text){
+  return hasWaitingPhrase(text) && !/\d{3,}/.test(text||"");
+}
+function isQuestionText(text){
+  var low = (text||"").toLowerCase().trim();
+  return low.indexOf("?") !== -1 || /^(чому|що|як|коли|де|скільки|чи|які|хто)(\s|,|!)/.test(low);
+}
+function clientSays(text){
+  T.phase = "typing";
+  var sb = $("#sendBtn"); if(sb) sb.disabled = true;
+  var c = $("#chat");
+  if(c) c.insertAdjacentHTML("beforeend", '<div class="typing" id="typing">Клієнт друкує…</div>');
+  scrollChat();
+  setTimeout(function(){
+    var tp = $("#typing"); if(tp) tp.remove();
+    if(T && T.phase === "typing"){
+      pushClient(text);
+      logChat("client", text);
+      T.phase = "chat";
+      var b = $("#sendBtn"); if(b) b.disabled = false;
+      var a = $("#answer"); if(a) a.focus();
+    }
+  }, 1000);
+}
+function clientReact(){
+  var q = clientQueue();
+  if(isHoldMsg(T.answers[T.answers.length - 1])){
+    /* Клієнт чекає і не видає наступну заплановану репліку — тільки після наступного повідомлення оператора */
+    if(T.qi < q.length){ T.hold = true; clientSays(WAIT_CLIENT_MSG); }
+    return;
+  }
+  if(T.qi < q.length){
+    T.hold = false;
+    clientSays(q[T.qi]);
+    T.qi++;
+  }
+  /* Інакше клієнт уже сказав фінальну репліку і мовчить */
+}
+function closeTicket(){
+  if(!T || (T.phase !== "chat" && T.phase !== "typing")) return;
+  var log = T.chatLog || [];
+  var last = log[log.length - 1];
+  var q = clientQueue();
+  /* Тікет закрито без відповіді: клієнт чекає (після «хвилинку»), останнє — питання клієнта
+     або останнє повідомлення оператора обіцяє перевірку, яку він так і не дав */
+  T.noAnswerClose = !!((T.hold && T.qi < q.length) ||
+    (last && last.who === "op" && isHoldMsg(last.text)) ||
+    (last && last.who === "client" && isQuestionText(last.text)));
+  finishToReview();
+}
+function skipScenario(){
+  stopTimer();
+  if(S.streak > 0) toast("Серію правильних відповідей перервано");
+  S.streak = 0;
+  save();
+  T = null;
+  renderPicker();
+}
+
+/* --- Автооцінка: словник типових мовних помилок --- */
+var GRAMMAR = [
+  {bad:"на рахунок", good:"щодо"},
+  {bad:"в вашому", good:"у вашому"},
+  {bad:"в ваш", good:"у ваш"},
+  {bad:"в вас", good:"у вас"},
+  {bad:"прийдеться", good:"доведеться"},
+  {bad:"чі ", good:"чи"},
+  {bad:"шо ", good:"що"},
+  {bad:"опять", good:"знову"},
+  {bad:"ихній", good:"їх"},
+  {bad:"вообщем", good:"загалом"},
+  {bad:"вообще", good:"взагалі"},
+  {bad:"нужно", good:"потрібно"},
+  {bad:"сейчас", good:"зараз"},
+  {bad:"ложите", good:"кладете"},
+  {bad:"ехайте", good:"їжджайте"}
+];
+function grammarIssues(answers){
+  var low = answers.join("\n").toLowerCase();
+  return GRAMMAR.filter(function(g){ return low.indexOf(g.bad) !== -1; });
+}
+/* --- Етап 4: детектор типових помилок українців в англомовних відповідях (лише для ENG-тікетів) --- */
+var ENG_MISTAKES = [
+  { re:/\bin\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/gi, bad:"in Monday", good:"on Monday", note:"Дні тижня — прийменник on.", w:1 },
+  { re:/\bin\s+\d{1,2}:\d{2}\b/g, bad:"in 18:00", good:"at 18:00", note:"Час — прийменник at.", w:1 },
+  { re:/\buntil\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday|tomorrow|tonight|the evening)\b/gi, bad:"until Friday", good:"by Friday", note:"Дедлайн — by (until — про тривалість процесу).", w:1 },
+  { re:/\bduring\s+\d+\s*(days?|hours?|weeks?|minutes?)\b/gi, bad:"during 3 days", good:"within 3 days", note:"Проміжок виконання — within.", w:1 },
+  { re:/\bsorry for the late\b/gi, bad:"Sorry for the late", good:"Sorry for the delay", note:"Потрібен іменник delay.", w:1 },
+  { re:/\bsorry for (your|the) problem\b/gi, bad:"Sorry for your problem", good:"Sorry for the trouble", note:"Природніше формулювання.", w:1 },
+  { re:/\bwhat you mean\b/gi, bad:"What you mean", good:"What do you mean?", note:"Питання — допоміжне do.", w:1 },
+  { re:/\bcan you (said|told|say me)\b/gi, bad:"Can you said", good:"Could you tell me", note:"Після can — базова форма дієслова.", w:2 },
+  { re:/\bsend me (the |a )?screenshots?\b/gi, bad:"Send me screenshot", good:"Could you send me a screenshot?", note:"Артикль + ввічлива форма.", w:2 },
+  { re:/\bgive me your\b/gi, bad:"Give me your…", good:"Could you share your…", note:"Пряма вимога — ввічлива форма.", w:2 },
+  { re:/\bi greet you\b/gi, bad:"I greet you", good:"Hello! / Good afternoon", note:"Калька «вітаю вас» — не вживається.", w:2 },
+  { re:/\bhelp to you\b/gi, bad:"help to you", good:"help you", note:"help + додаток без to.", w:1 },
+  { re:/\bdeliver(ing)?\s+on your address\b/gi, bad:"deliver on your address", good:"deliver to your address", note:"Адреса — прийменник to.", w:1 },
+  { re:/\bis delivering now\b/gi, bad:"is delivering now", good:"is being delivered now", note:"Посилку доставляють — пасив.", w:1 },
+  { re:/\b(i am|i'm)\s+agree\b/gi, bad:"I am agree", good:"I agree", note:"agree — дієслово, без am.", w:1 },
+  { re:/\bhow (many|much)\s+(it\s+|the\s+)?cost(es)?\b/gi, bad:"How much cost", good:"How much does it cost?", note:"Питання з does.", w:1 },
+  { re:/\bwe will do (a |the )?refund\b/gi, bad:"we will do refund", good:"we will refund you / issue a refund", note:"refund — дієслово або issue a refund.", w:1 },
+  { re:/\bplease to (check|send|confirm|wait|contact|fill)\b/gi, bad:"please to check", good:"please check", note:"please + дієслово без to.", w:1 },
+  { re:/\b(make|do) (an |the |your )?order\b/gi, bad:"make order", good:"place an order", note:"Колокація place an order.", w:1 },
+  { re:/\bit will be (come|arrive)\b/gi, bad:"it will be come", good:"it will arrive", note:"Зайве be перед дієсловом.", w:1 },
+  { re:/\bwill be (come|arrive)\b/gi, bad:"will be arrive", good:"will arrive", note:"Зайве be перед дієсловом.", w:1 },
+  { re:/\bin the same day\b/gi, bad:"in the same day", good:"on the same day", note:"same day — on.", w:1 },
+  { re:/\byou must to\b/gi, bad:"you must to", good:"you must / you need to", note:"must без to.", w:1 },
+  { re:/\bmore better\b/gi, bad:"more better", good:"better", note:"Подвійний компаратив.", w:1 },
+  { re:/\bthe most easiest\b/gi, bad:"the most easiest", good:"the easiest", note:"Подвійний суперлятив.", w:1 },
+  { re:/\bdidn'?t (received|got|sent|came|answered)\b/gi, bad:"didn't received", good:"didn't receive", note:"Після didn't — базова форма.", w:2 },
+  { re:/\bwe can not\b/gi, bad:"we can not", good:"we cannot / we can't", note:"cannot пишеться разом.", w:1 },
+  { re:/\bit'?s mean\b/gi, bad:"it's mean", good:"it means", note:"3-я особа однини -s.", w:1 },
+  { re:/\bdoes not related\b/gi, bad:"does not related", good:"is not related", note:"Потрібен пасив або інше дієслово.", w:1 }
+];
+var ENG_TONE = [
+  { verbs:["send","give","check","call","provide","write","fill","confirm","contact","specify","attach"],
+    bad:"імператив на початку речення", good:"Please … / Could you …", note:"Ввічлива форма прохання.", w:1 },
+  { re:/\bwill arrive on\b/gi, bad:"will arrive on Friday", good:"should arrive by Friday", note:"Обіцянку точної дати пом'якшіть.", w:1 }
+];
+function englishIssues(answers){
+  var text = (answers || []).join("\n");
+  var out = [];
+  ENG_MISTAKES.forEach(function(m){
+    var match = text.match(m.re);
+    if (match) out.push({ bad: match[0], good: m.good, note: m.note, w: m.w });
+  });
+  (window.ENG_MISTAKES_EXTRA || []).forEach(function(m){
+    var match = text.match(m.re);
+    if (match) out.push({ bad: match[0], good: m.good, note: m.note, w: m.w });
+  });
+  ENG_TONE.forEach(function(t){
+    if (t.re){
+      var m2 = text.match(t.re);
+      if (m2) out.push({ bad: m2[0], good: t.good, note: t.note, w: t.w });
+    } else if (t.verbs){
+      var sentences = text.split(/[.!?]+/);
+      for (var i = 0; i < sentences.length; i++){
+        var s = sentences[i].trim();
+        if (!s) continue;
+        var startsImperative = t.verbs.some(function(v){ return (new RegExp("^" + v + "\\b", "i")).test(s); });
+        var polite = /\b(please|could you|would you|kindly)\b/i.test(s);
+        if (startsImperative && !polite){
+          out.push({ bad: s.split(/\s+/).slice(0, 6).join(" ") + "…", good: t.good, note: t.note, w: t.w });
+          break;
+        }
+      }
+    }
+  });
+  return out;
+}
+/* --- Автооцінка пунктів чекліста за повідомленнями оператора --- */
+var CHECK_AUTOS = {
+  G: function(c){ return c.greeting; },
+  E: function(c){ return c.empathy; },
+  A: function(c){ return c.low.indexOf("вибач")!==-1 || c.low.indexOf("перепрош")!==-1 || c.low.indexOf("нашої вини")!==-1 || c.low.indexOf("наша помилк")!==-1 || c.low.indexOf("мені шкода")!==-1; },
+  U: function(c){ return /\d{3,}/.test(c.text) || c.low.indexOf("номер замовленн")!==-1 || c.low.indexOf("ттн")!==-1 || c.low.indexOf("номер телефону")!==-1; },
+  R: function(c){ return c.factsHits >= 1 || c.keysFound >= 1; },
+  N: function(c){ return c.anyStep; },
+  F: function(c){ return ["дякую за звернення","гарного дня","гарного вечора","до зустрічі","радий був","рада була","звертайтеся","зверніться"].some(function(m){ return c.lastLow.indexOf(m) !== -1; }); },
+  P: function(c){ return ["альтернатив","варіант","вибір"].some(function(m){ return c.low.indexOf(m) !== -1; }); },
+  O: function(c){ return ["правил","політик","14 днів","12 місяців","2500","не передбачен","3–5","3-5"].some(function(m){ return c.low.indexOf(m) !== -1; }); },
+  D: function(c){ return ["на жаль","не можемо","не можу","немож"].some(function(m){ return c.low.indexOf(m) !== -1; }); },
+  C: function(c){ return c.capsOk && !c.forbiddenRude; },
+  B: function(c){ return (c.orderDataUsed && (c.orderCheckedEarly || c.orderChecked)) || ["проконтролю","особисто","під контролем"].some(function(m){ return c.low.indexOf(m) !== -1; }); },
+  W: function(c){ return c.low.indexOf("дякую") !== -1 || c.low.indexOf("подяк") !== -1; },
+  K: function(c){ return ["ттн","номер запиту","претензі","sms","смс","посиланн","реквізит"].some(function(m){ return c.low.indexOf(m) !== -1; }); },
+  V: function(c){ return (c.orderDataUsed && (c.orderCheckedEarly || c.orderChecked)) || c.low.indexOf("підтвердіт") !== -1 || c.low.indexOf("підтвердьте") !== -1; },
+  M: function(c){ return ["промокод","бонус","компенсац","знижк","подарунок"].some(function(m){ return c.low.indexOf(m) !== -1; }); }
+};
+function autoChecklist(scen, c){
+  var passed = 0, rows = [];
+  scen.checks.forEach(function(k){
+    var fn = CHECK_AUTOS[k];
+    var ok = fn ? !!fn(c) : (c.factsHits >= 1);
+    if(ok) passed++;
+    rows.push({k:k, ok:ok, name:CL[k]||k});
+  });
+  return {rows:rows, passed:passed};
+}
+/* --- Ітогова оцінка 1–10 за 6 критеріями --- */
+function clamp10(v){ return Math.max(0, Math.min(10, v)); }
+function scoreAnswers(b, an, gIssues, esc){
+  esc = esc || {};
+  var polite = 10;
+  if(!b.greeting) polite -= 4;
+  if(!b.caps) polite -= 4;
+  if(!b.vy) polite -= 3;
+  if(an.forb.some(function(f){ return f.l.indexOf("Грубість") !== -1; })) polite -= 3;
+  var accuracy = Math.round(an.facts.pct/10);
+  var security = Math.max(0, 10 - an.forb.length*5
+    - (esc.unnecessary ? 3 : 0)     /* зайва ескалація — мінус до Policy */
+    - (esc.noteMissing ? 2 : 0)     /* нотатка без суті */
+    - (esc.notifyMissing ? 2 : 0)   /* клієнта не поінформовано про передачу */
+    - (esc.wrongDept ? 2 : 0));     /* ескалація не в той відділ — клієнт втрачає час */
+  var clarity = 10 - (b.len?0:3) - (b.lastStep?0:3) - (b.sentence?0:2) - (b.caps?0:2);
+  var literacy = Math.max(0, 10 - gIssues.length*2);
+  var empathy = b.empathy ? 10 : 3;
+  var v = {polite:clamp10(polite), accuracy:clamp10(accuracy), security:clamp10(security),
+    clarity:clamp10(clarity), literacy:clamp10(literacy), empathy:clamp10(empathy)};
+  v.score = Math.round((v.polite + v.accuracy + v.security + v.clarity + v.literacy + v.empathy)/6);
+  /* Етап 1: критичні обмеження — суперечність еталону (заперечені факти), критичні помилки, нуль фактів */
+  if (an.facts.contradictions >= 2) v.score = Math.min(v.score, 3);
+  else if (an.facts.contradictions === 1) v.score = Math.min(v.score, 6);
+  if (an.forb.length) v.score = Math.min(v.score, 3);
+  if (an.facts.pct === 0) v.score = Math.min(v.score, 3);
+  else if (an.facts.pct < 20) v.score = Math.min(v.score, 4);
+  else if (an.facts.pct < 50) v.score = Math.min(v.score, 6);
+  /* Етап 3: пропущена обов'язкова ескалація — стеля 5/10; не той відділ — стеля 7/10 */
+  if (esc.missed) v.score = Math.min(v.score, 5);
+  if (esc.wrongDept) v.score = Math.min(v.score, 7);
+  /* QA Score /100 — окремо від XP: Accuracy 35 · Policy&Safety 25 · Next Steps 15 · Communication 15 · Language 10 */
+  var ns10 = b.lastStep ? 10 : 2;
+  if (esc.notifyMissing) ns10 = Math.min(ns10, 4);   /* після ескалації клієнта не поінформовано */
+  /* Етап 4: мінус Language за типові помилки українців в англійській (не стеля, максимум −6) */
+  var langMinus = 0;
+  (an.engIssues || []).forEach(function(m){ langMinus += (m.w || 1); });
+  langMinus = Math.min(6, langMinus);
+  var lang10 = Math.max(0, ((v.literacy + v.clarity)/20)*10 - langMinus);
+  var qaRaw = (an.facts.pct/100)*35 + (v.security/10)*25 + (ns10/10)*15 +
+              ((v.polite + v.empathy)/20)*15 + (lang10/10)*10;
+  v.qa100 = Math.min(100, Math.max(0, Math.round(qaRaw)));
+  v.qa100 = Math.min(v.qa100, v.score * 10);
+  v.ns10 = ns10;
+  v.lang10 = lang10;
+  v.langMinus = langMinus;
+  /* Етап 3 правка: прапорець «стеля оцінки спрацювала» — вимикає множники і бонуси в XP */
+  v.capped = (an.facts.contradictions >= 1) || an.forb.length > 0 || an.facts.pct < 50 ||
+             !!esc.missed || !!esc.wrongDept;
+  return v;
+}
+/* --- Адмінка оператора та база знань (клієнт їх не бачить) --- */
+var STATUS_HINTS = {
+  "В обробці":["в обробці"],
+  "Відправлено":["відправлено","в дорозі"],
+  "У відділенні":["у відділенні","готово до видачі"],
+  "Очікує оплати":["очікує оплати","не оплачено"],
+  "Скасовано":["скасовано"],
+  "Доставлено":["доставлено"],
+  "Повернення":["на зворотн","повернеться на склад","їде назад"]
+};
+var KB = [
+  {t:"Доставка Новою поштою", d:"1–2 дні. Відділення, поштомат або кур'єр.", c:"Доставка"},
+  {t:"Доставка Укрпоштою", d:"3–5 днів, найдешевший спосіб.", c:"Доставка"},
+  {t:"Час відправки", d:"Замовлення відправляємо щодня до 16:00, включно з вихідними.", c:"Доставка"},
+  {t:"Безкоштовна доставка", d:"Від 2500 грн у кошику. Правило фіксоване, винятків немає.", c:"Доставка"},
+  {t:"Кур'єрська доставка", d:"Інтервал 10:00–19:00, кур'єр дзвонить за 30–60 хв.", c:"Доставка"},
+  {t:"Розшук посилки", d:"Претензія перевізнику, відповідь до 3–5 робочих днів.", c:"Доставка"},
+  {t:"Втрата посилки", d:"Заміна товару або повернення коштів за наш рахунок, без очікування розшуку.", c:"Доставка"},
+  {t:"Зберігання у поштоматі", d:"3 дні, далі посилка повертається відправнику.", c:"Доставка"},
+  {t:"Переадресація", d:"Можлива в додатку перевізника за ТТН або запитом від магазину.", c:"Доставка"},
+  {t:"Оплата карткою онлайн", d:"Visa/Mastercard, без комісії.", c:"Оплата"},
+  {t:"Післяплата", d:"Оплата при отриманні, комісія перевізника 20 грн.", c:"Оплата"},
+  {t:"Повернення коштів", d:"3–5 робочих днів після підтвердження (для післяплати — після приймання).", c:"Оплата"},
+  {t:"Подвійне списання", d:"Відкат дубльованого платежу — 3–5 робочих днів.", c:"Оплата"},
+  {t:"Відхилений платіж", d:"Ліміт банку або незавершений 3-D Secure; резерв товару — 2 години.", c:"Оплата"},
+  {t:"Повернення 14 днів", d:"Товар належної якості: не вживався, упаковка збережена.", c:"Повернення"},
+  {t:"Зворотна доставка", d:"Належна якість — за рахунок покупця; брак — за наш рахунок.", c:"Повернення"},
+  {t:"Товар із монтажем", d:"Встановлена техніка = товар у вживанні, поверненню не підлягає.", c:"Повернення"},
+  {t:"Гарантія 12 місяців", d:"На всю техніку з дня отримання.", c:"Гарантія"},
+  {t:"Діагностика в СЦ", d:"До 5 робочих днів; підтверджений брак — ремонт або заміна.", c:"Гарантія"},
+  {t:"Резерв замовлення", d:"Товар у кошику тримають 2 години.", c:"Замовлення"},
+  {t:"Промокоди й акції", d:"Не сумуються — застосовується найвигідніша ціна.", c:"Знижки"},
+  {t:"Бонус за відгук", d:"Промокод 3% за розгорнутий відгук з фото.", c:"Знижки"},
+  {t:"Підписка на розсилку", d:"Промокод 5% на перше замовлення.", c:"Знижки"},
+  {t:"Розмір акційних знижок", d:"Зазвичай 5–15% на великі прилади.", c:"Знижки"}
+];
+function orderFactsMentioned(scen, answers){
+  if(!scen.order || !answers.length) return {num:false, sum:false, status:false, ttn:false};
+  var low = answers.join(" ").toLowerCase();
+  var digits = low.replace(/\D/g, "");
+  var o = scen.order;
+  var hints = STATUS_HINTS[o.status] || [String(o.status).toLowerCase()];
+  return {
+    num: !!(o.num && String(o.num).replace(/\D/g,"").length >= 3 && digits.indexOf(String(o.num).replace(/\D/g,"")) !== -1),
+    sum: (o.sum||"").replace(/\D/g,"").length >= 3 && digits.indexOf(o.sum.replace(/\D/g,"")) !== -1,
+    status: hints.some(function(h){ return low.indexOf(h) !== -1; }),
+    ttn: !!(o.ttn && o.ttn.replace(/\D/g,"").length >= 10 && digits.indexOf(o.ttn.replace(/\D/g,"")) !== -1)
+  };
+}
+function orderAdjFor(){
+  if(!T || !T.scen || !T.scen.order) return {adj:0, note:null};
+  var f = orderFactsMentioned(T.scen, T.answers);
+  var used = !!(f.num || f.sum || f.ttn);
+  if(T.orderCheckedEarly) return { adj: used ? 10 : 0, note: used ? "ok-early" : "early-no-data" };
+  if(f.sum || f.status || f.ttn) return {adj:-10, note:"bad-facts"};
+  if(T.orderChecked) return {adj:0, note:"ok-late"};
+  return {adj:0, note:null};
+}
+function orderChipHtml(){
+  if(!T || !T.scen || !T.scen.order) return "";
+  var oa = orderAdjFor();
+  var cls = oa.note === "ok-early" ? "ok" : (oa.note === "bad-facts" ? "bad" : "dim");
+  var txt = oa.note === "ok-early" ? "Адмінка: перевірено до відповіді ✓" :
+            oa.note === "early-no-data" ? "Адмінка: відкрито, але дані не використано —" :
+            oa.note === "bad-facts" ? "Адмінка: дані названо без перевірки ✗" :
+            oa.note === "ok-late" ? "Адмінка: перевірено після відповіді" : "Адмінка: не перевірено —";
+  return '<span class="chip ' + cls + '">' + txt + '</span>';
+}
+function togglePanel(which){
+  var ap = $("#adminPanel"), kp = $("#kbPanel"), ep = $("#escPanel");
+  if(which === "esc"){
+    if(!ep) return;
+    var showE = ep.style.display === "none";
+    ep.style.display = showE ? "block" : "none";
+    if(ap) ap.style.display = "none";
+    if(kp) kp.style.display = "none";
+    return;
+  }
+  if(!ap || !kp) return;
+  if(which === "admin"){
+    var show = ap.style.display === "none";
+    ap.style.display = show ? "block" : "none";
+    kp.style.display = "none";
+    if(ep) ep.style.display = "none";
+    if(show){
+      var inp = $("#orderInput"); if(inp){ inp.value = ""; inp.focus(); }
+      var res = $("#orderResult");
+      if(res) res.innerHTML = '<p class="muted small">Введ?ть номер замовлення кл?єнта та натисн?ть <Знайти>. Кл?єнт ц?єї панел? не бачить.</p>';
+    }
+  } else {
+    var show2 = kp.style.display === "none";
+    kp.style.display = show2 ? "block" : "none";
+    ap.style.display = "none";
+    if(ep) ep.style.display = "none";
+    if(show2){ var ki = $("#kbInput"); if(ki){ ki.value = ""; } renderKBList(""); }
+  }
+}
+function findOrder(){
+  var inp = $("#orderInput"), res = $("#orderResult");
+  if(!inp || !res || !T) return;
+  var digits = (inp.value || "").replace(/\D/g, "");
+  var sc = T.scen;
+  if(!digits){ res.innerHTML = '<p class="muted small">Введіть номер замовлення.</p>'; return; }
+  if(sc.order && digits === sc.order.num){
+    if(T.answers.length === 0) T.orderCheckedEarly = true;
+    else if(!T.orderCheckedEarly) T.orderChecked = true;
+    var o = sc.order;
+    res.innerHTML = '<div class="ordercard"><b>Замовлення №' + esc(o.num) + '</b><table>' +
+      '<tr><td>Статус</td><td class="ostat">' + esc(o.status) + '</td></tr>' +
+      '<tr><td>Дата</td><td>' + esc(o.date) + '</td></tr>' +
+      '<tr><td>Товари</td><td>' + esc(o.items) + '</td></tr>' +
+      '<tr><td>Сума</td><td>' + esc(o.sum) + '</td></tr>' +
+      '<tr><td>Оплата</td><td>' + esc(o.pay) + '</td></tr>' +
+      '<tr><td>Доставка</td><td>' + esc(o.deliv) + '</td></tr>' +
+      (o.ttn ? '<tr><td>ТТН</td><td>' + esc(o.ttn) + '</td></tr>' : '') +
+      '<tr><td>Місто</td><td>' + esc(o.city) + '</td></tr></table></div>';
+  } else {
+    res.innerHTML = '<p class="ordermiss">❌ Замовлення не знайдено</p>';
+  }
+}
+function renderKBList(q){
+  var box = $("#kbResults"); if(!box) return;
+  q = (q || "").toLowerCase().trim();
+  var items = KB.filter(function(k){
+    return !q || k.t.toLowerCase().indexOf(q) !== -1 || k.d.toLowerCase().indexOf(q) !== -1 || k.c.toLowerCase().indexOf(q) !== -1;
+  });
+  box.innerHTML = items.length ? items.map(function(k){
+    return '<div class="kbitem"><b>' + esc(k.t) + '</b><span class="kbcat">' + esc(k.c) + '</span><p class="small">' + esc(k.d) + '</p></div>';
+  }).join("") : '<p class="muted small">Нічого не знайдено. Спробуйте: доставка, післяплата, повернення, гарантія, промокод…</p>';
+}
+/* --- Розбір відповіді --- */
+function finishToReview(){
+  T.phase = "review";
+  T.sec = Math.round((Date.now() - T.t0)/1000);
+  stopTimer();
+  T.basic = checkBasics(T.answers);
+  var low = T.answers.join(" ").toLowerCase();
+  var norm = normalizeAnswerText(low);
+  var refNorm = normalizeAnswerText(String(T.scen.ref || "").toLowerCase());
+  T.keysFound = T.scen.keys.filter(function(k){ return stemEvidence(k, norm).pos > 0; });
+  T.analysis = {facts: analyzeFacts(T.scen, T.answers, refNorm), forb: checkForbidden(T.answers)};
+  T.garbage = isGarbage(T.answers);
+  T.grammar = grammarIssues(T.answers);
+  T.engIssues = (T.scen.cat === "англомовний клієнт") ? englishIssues(T.answers) : [];
+  T.analysis.engIssues = T.engIssues;
+  var om = orderFactsMentioned(T.scen, T.answers);
+  var c = {
+    low: low, text: T.answers.join(" "),
+    greeting: T.basic.greeting, capsOk: T.basic.caps, empathy: T.basic.empathy,
+    lastLow: (T.answers[T.answers.length-1] || "").toLowerCase(),
+    anyStep: low.indexOf("?") !== -1 || NEXTSTEP.some(function(m){ return low.indexOf(m) !== -1; }),
+    factsHits: T.analysis.facts.list.filter(function(f){ return f.hit; }).length,
+    keysFound: T.keysFound.length,
+    orderCheckedEarly: !!T.orderCheckedEarly, orderChecked: !!T.orderChecked,
+    orderDataUsed: !!(om.num || om.sum || om.ttn),
+    forbiddenRude: T.analysis.forb.some(function(f){ return f.l.indexOf("Грубість") !== -1; })
+  };
+  T.auto = autoChecklist(T.scen, c);
+  /* Етап 3: оцінка ескалації */
+  T.escAssessment = (window.Escalation && window.Escalation.assess) ?
+    window.Escalation.assess(T.scen, T.escalation, T.answers) : null;
+  T.escBonus = (T.analysis.facts.pct >= 50 && T.escAssessment) ? T.escAssessment.bonus : 0;
+  T.score = scoreAnswers(T.basic, T.analysis, T.grammar, T.escAssessment);
+  if(T.garbage){ T.score = {polite:0, accuracy:0, security:0, clarity:0, literacy:0, empathy:0, score:1, qa100:0}; }
+  commit();
+}
+function xpPreviewRows(xp, checked){
+  var rows = '<table>' +
+    '<tr><td>За складність (' + T.scen.dfn + ' ★)</td><td>+' + xp.base + '</td></tr>' +
+    '<tr><td>Швидкість (' + fmtSec(T.sec) + ')</td><td>+' + xp.speed + '</td></tr>' +
+    '<tr><td>Повний діалог</td><td>+' + xp.dialog + '</td></tr>' +
+    '<tr><td>Автоперевірки</td><td>+' + xp.basic + '</td></tr>' +
+    '<tr><td>Ключові слова (' + T.keysFound.length + '×2)</td><td>+' + xp.keys + '</td></tr>' +
+    '<tr><td>Чекліст (' + checked + '×5)</td><td>+' + xp.cl + '</td></tr>' +
+    (xp.escBonus ? '<tr><td>Ескалація (відділ, нотатка, повідомлення клієнту)</td><td>+' + xp.escBonus + '</td></tr>' : '') +
+    '<tr><td>Факти з еталона (' + xp.factPct + '%)</td><td>+' + xp.factXP + '</td></tr>' +
+    (xp.garbage ? '<tr><td>Сміттєва відповідь — без реального змісту</td><td>0</td></tr>' : '') +
+    (xp.weak ? '<tr><td>Слабка відповідь — лише ввічливість і грамотність</td><td>+' + xp.total + '</td></tr>' : '') +
+    (xp.forb ? '<tr><td>Заборонене у відповіді</td><td>' + xp.forb + '</td></tr>' : '') +
+    (xp.orderAdj ? '<tr><td>' + (xp.orderAdj > 0 ? 'Замовлення перевірено в адмінці до відповіді' : 'Дані названо без перевірки в адмінці') + '</td><td>' + (xp.orderAdj > 0 ? '+' : '') + xp.orderAdj + '</td></tr>' : '') +
+    (xp.noAns ? '<tr><td>Тікет закрито без відповіді</td><td>' + xp.noAns + '</td></tr>' : '') +
+    '<tr><td>Множник серії ×' + xp.mult.toFixed(2) + '</td><td>→ ' + xp.total + ' XP</td></tr>' +
+    '</table>';
+  if(xp.garbage) rows += '<p class="small" style="color:var(--bad);margin:6px 0 0">Сміттєва відповідь (набір літер без сенсу) — 0 XP, серія скидається.</p>';
+  else if(xp.weak) rows += '<p class="small" style="color:var(--warn);margin:6px 0 0">Слабка відповідь: менше 20% фактів з еталона — нараховано 1–5 XP лише за ввічливість і грамотність. Сценарій не зараховується, серія зберігається.</p>';
+  else if(!xp.counted) rows += '<p class="small" style="color:var(--bad);margin:6px 0 0">Співпадіння з еталоном менше 50% — нараховується максимум 5 XP, сценарій не зараховується.</p>';
+  return rows;
+}
+function scoreRow(name, v){
+  return '<tr><td>' + name + '</td><td class="' + (v>=7?'sgood':(v>=4?'smid':'sbad')) + '">' + v + '/10</td></tr>';
+}
+function renderReview(){
+  var sc = T.scen, b = T.basic, an = T.analysis || {facts:{list:[],pct:0}, forb:[]};
+  var au = T.auto || {rows:[], passed:0};
+  var r = T.result || {xp:{total:0,counted:true,factPct:an.facts.pct}, proper:true, factPct:an.facts.pct};
+  var sc6 = T.score || {score:0, polite:0, accuracy:0, security:0, clarity:0, literacy:0, empathy:0};
+  /* Повна заміна вмісту вкладки — ніколи не додаємо блоки до попередніх */
+  var html = '<div class="sessbar">' +
+    '<span class="chip cat">' + esc(sc.cat) + '</span>' +
+    '<span class="chip">' + stars(sc.dfn) + '</span>' +
+    '<span class="chip">' + (CT[sc.ct]||"🙂") + ' ' + esc(sc.ct) + '</span>' +
+    '<span class="chip">⏱ ' + fmtSec(T.sec) + '</span></div>' +
+    '<div class="chat" id="chat"></div>' +
+    '<div class="card review" style="margin-top:12px">';
+  var title = r.xp.garbage
+    ? '❌ Не зараховано: відповідь без реального змісту — 0 XP'
+    : (r.xp.weak
+      ? '⚠️ Слабка відповідь: бракує ключових фактів (' + r.factPct + '%) — +' + r.xp.total + ' XP'
+      : (!r.xp.counted
+        ? '❌ Не зараховано: співпадіння з еталоном ' + r.factPct + '% (менше 50%)'
+        : (r.proper ? '✅ Тікет закрито, відповідь зарахована' : '⚠️ Тікет закрито, але серія перервана (базові перевірки)')));
+  html += '<h3>' + title + '</h3><p class="totxp">+' + r.xp.total + ' XP</p>';
+  /* Ітогова оцінка 1–10 за 6 критеріями */
+  html += '<h4>Ітогова оцінка</h4><div class="scorewrap"><div class="scorebig">' + sc6.score + '<span>/10</span></div>' +
+    '<table class="scoretab">' +
+    scoreRow("Ввічливість", sc6.polite) +
+    scoreRow("Точність (факти)", sc6.accuracy) +
+    scoreRow("Безпека (заборонене)", sc6.security) +
+    scoreRow("Чіткість", sc6.clarity) +
+    scoreRow("Грамотність", sc6.literacy) +
+    scoreRow("Емпатія", sc6.empathy) +
+    '</table></div>' +
+    '<p class="small muted">QA Score: <b>' + (sc6.qa100 || 0) + ' / 100</b> — Accuracy 35 · Policy&amp;Safety 25 · Next Steps ' + (sc6.ns10 || 0) + '×1.5 · Communication 15 · Language 10 (навчальна симуляція, не реальна робота)</p>';
+  /* Етап 3: блок ескалації у звіті тікета */
+  if (T.escAssessment){
+    var e3 = T.escAssessment;
+    var escDone = e3.escalated
+      ? "Ескальовано: " + esc((T.escalation || {}).dept) + " · пріоритет: " + esc((T.escalation || {}).priority) +
+        (e3.deptOk ? " — правильний відділ" : (e3.required ? " — не той відділ (частково)" : "")) +
+        (e3.noteMissing ? " · нотатка без суті (−2 Policy)" : "") +
+        (e3.notifyMissing ? " · клієнта не поінформовано про передачу (− Next Steps)" : "")
+      : "Ескалації не було";
+    var escExp = e3.required
+      ? "Очікувалась ескалація у «" + esc(e3.dept) + "»" + (e3.missed ? " — пропущено, стеля 5/10" : "")
+      : (e3.self ? "Очікувалось самостійне рішення оператора" : "Ескалація не передбачена") +
+        (e3.unnecessary ? " — ескалація зайва (−3 Policy)" : "");
+    html += '<h4>⬆ Ескалація</h4>' +
+      '<div class="factrow"><b>Що зроблено:</b> ' + escDone + '</div>' +
+      '<div class="factrow"><b>Що очікувалось:</b> ' + escExp + '</div>' +
+      (e3.why ? '<div class="factrow small muted">Чому: ' + esc(e3.why) + '</div>' : '');
+  }
+  if((T.grammar||[]).length){
+    html += '<div class="grammbox">' + T.grammar.map(function(g){
+      return '<div class="factrow">✍️ «' + esc(g.bad.trim()) + '» → правильно: <b>«' + esc(g.good) + '»</b></div>';
+    }).join("") + '</div>';
+  }
+  if((T.engIssues||[]).length){
+    html += '<div class="grammbox">' + T.engIssues.map(function(m){
+      return '<div class="factrow">🇬🇧 ❌ «' + esc(m.bad) + '» → ✅ «' + esc(m.good) + '» <span class="muted small">— ' + esc(m.note) + ' (−' + m.w + ' Language)</span></div>';
+    }).join("") + '</div>';
+  }
+  if(T.noAnswerClose){
+    html += '<div class="factrow" style="color:var(--bad);font-weight:600;padding:6px 0">⚠️ Тікет закрито без відповіді: клієнт чекав на вашу відповідь (−15 XP)</div>';
+  }
+  html += '<h3>Порівняння з еталоном</h3>' +
+    '<div class="cmpgrid"><div class="cmpcol"><h4>Як написали ви (' + T.answers.length + ')</h4>' +
+    T.answers.map(function(a){ return '<div class="ans">' + esc(a) + '</div>'; }).join("") +
+    '</div><div class="cmpcol"><h4>Еталон сильного оператора</h4>' +
+    '<div class="refcard" style="font-size:13px">' + esc(sc.ref) + '</div></div></div>';
+  if(an.facts.list.length){
+    html += '<h4>Ключові факти з еталона — співпадіння ' + an.facts.pct + '%</h4>' +
+      an.facts.list.map(function(f){
+        return '<div class="factrow' + (f.hit ? '' : ' miss') + '">' + (f.hit ? '✅' : '❌') + ' ' + esc(f.l) + '</div>';
+      }).join("");
+    var missed = an.facts.list.filter(function(f){ return !f.hit; }).map(function(f){ return f.l; });
+    if(missed.length && an.facts.pct < 50){
+      html += '<div class="factrow" style="color:var(--warn);font-weight:600;padding:4px 0">Бракує ключових фактів: ' + esc(missed.join("; ")) + '</div>';
+    }
+  }
+  if(an.forb.length){
+    html += '<h4>🚫 Заборонене у відповіді (−10 XP за кожне, максимум −20)</h4>' +
+      an.forb.map(function(f){ return '<div class="factrow">⛔ ' + esc(f.l) + '</div>'; }).join("");
+  }
+  html += '<h4>Автоперевірки</h4><div class="chiprow">' +
+    '<span class="chip ' + (b.greeting?'ok':'bad') + '">Привітання ' + (b.greeting?'✓':'✗') + '</span>' +
+    '<span class="chip ' + (b.caps?'ok':'bad') + '" ' + (b.caps?'':'title="' + esc((b.badCaps||[]).join(", ")) + '"') + '>Без КАПСУ ' + (b.caps?'✓':'✗') + '</span>' +
+    '<span class="chip ' + (b.len?'ok':'bad') + '">Довжина (' + b.chars + ' симв.) ' + (b.len?'✓':'✗') + '</span>' +
+    '<span class="chip ' + (b.sentence?'ok':'bad') + '">Повне речення ' + (b.sentence?'✓':'✗') + '</span>' +
+    '<span class="chip ' + (b.vy?'ok':'bad') + '">Звернення на «Ви» ' + (b.vy?'✓':'✗') + '</span>' +
+    '<span class="chip ' + (b.lastStep?'ok':'bad') + '">Питання / наступний крок ' + (b.lastStep?'✓':'✗') + '</span>' +
+    '<span class="chip ' + (b.empathy?'ok':'dim') + '">Емпатія ' + (b.empathy?'✓':'—') + '</span>' +
+    orderChipHtml() + '</div>';
+  html += '<h4>Чекліст — автооцінка за вашими повідомленнями (' + au.passed + '/' + au.rows.length + ')</h4>' +
+    au.rows.map(function(row){
+      return '<div class="factrow' + (row.ok ? '' : ' miss') + '">' + (row.ok ? '✅' : '❌') + ' ' + esc(row.name) + '</div>';
+    }).join("");
+  html += '<h4>Ключові слова (' + T.keysFound.length + '/' + sc.keys.length + ')</h4><div class="chiprow">' +
+    sc.keys.map(function(k){ return '<span class="kchip ' + (T.keysFound.indexOf(k)!==-1?'ok':'miss') + '">' + esc(k) + '</span>'; }).join("") + '</div>';
+  html += '<div class="xpbrd">' + xpPreviewRows(r.xp, au.passed) + '</div>';
+  html += '<div class="row end"><button class="btn" id="toCatsBtn">До категорій</button>' +
+    '<button class="btn primary big" id="nextBtn">▶ Наступний сценарій</button></div></div>';
+  $("#tab-train").innerHTML = html;
+  (T.chatLog || [{who:"client", text:sc.first}]).forEach(function(m){
+    if(m.who === "client") pushClient(m.text); else pushOp(m.text);
+  });
+  var nb = $("#nextBtn"); if(nb) nb.addEventListener("click", function(){ startScenario(); });
+  var tb = $("#toCatsBtn"); if(tb) tb.addEventListener("click", function(){ T = null; renderPicker(); });
+}
+/* Етап 1: множник серії — лише для першого проходження сценарію; повтори одного сценарію не фармляться */
+function repetitionMult(sid){
+  var repeats = 0;
+  for (var i = 0; i < S.history.length; i++) { if (S.history[i] && S.history[i].sid === sid) repeats++; }
+  return repeats === 0 ? (1 + 0.05 * Math.min(S.streak, 10)) : 1;
+}
+function commit(){
+  var b = T.basic;
+  var an = T.analysis || {facts:{list:[],pct:0}, forb:[]};
+  var au = T.auto || {rows:[], passed:0};
+  var proper = an.facts.pct >= 50 && b.greeting && b.caps && b.len && b.vy && b.lastStep && !T.noAnswerClose && !T.garbage;
+  var mult = repetitionMult(T.scen.id);
+  var oa = orderAdjFor();
+  var xp = calcXP(T.scen, {sec:T.sec, nAnswers:T.answers.length, checked:au.passed,
+    keysFound:T.keysFound.length, basic:b, mult:mult, orderAdj:oa.adj, escBonus:T.escBonus || 0,
+    scoreCapped:!!(T.score||{}).capped, missedEsc:!!(T.escAssessment||{}).missed,
+    factPct:an.facts.pct, forbidden:an.forb.length, noAnswer:!!T.noAnswerClose,
+    garbage:!!T.garbage, scorePolite:(T.score||{}).polite||0, scoreLiteracy:(T.score||{}).literacy||0});
+  var before = lvl(), t = todayKey();
+  S.xp += xp.total;
+  S.xpByDay[t] = (S.xpByDay[t]||0) + xp.total;
+  S.totalSec = (S.totalSec||0) + T.sec;
+  S.streak = xp.weak ? S.streak : (proper ? S.streak + 1 : 0);
+  if(S.streak > S.bestStreak) S.bestStreak = S.streak;
+  S.history.unshift({ts:Date.now(), cat:T.scen.cat, sid:T.scen.id, dfn:T.scen.dfn, ct:T.scen.ct,
+    sec:T.sec, answers:T.answers.slice(), ref:T.scen.ref,
+    checked:au.rows.filter(function(r){ return r.ok; }).map(function(r){ return r.k; }),
+    checksAll:T.scen.checks.slice(), keysFound:T.keysFound.length, keysTotal:T.scen.keys.length,
+    xp:xp.total, proper:proper, counted:xp.counted, factPct:an.facts.pct, weak:xp.weak,
+    score:(T.score||{}).score || 0, qa100:(T.score||{}).qa100 || 0, orderChecked:!!(T.orderCheckedEarly||T.orderChecked),
+    esc:T.escAssessment ? {dept:(T.escalation||{}).dept || null, required:T.escAssessment.required,
+      missed:T.escAssessment.missed, unnecessary:T.escAssessment.unnecessary, deptOk:T.escAssessment.deptOk} : null});
+  if(S.history.length > 300) S.history.length = 300;
+  if(xp.counted){
+    S.doneCount++;
+    S.doneByCat[T.scen.cat] = (S.doneByCat[T.scen.cat]||0) + 1;
+    S.catsTried[T.scen.cat] = 1;
+    if(T.sec <= 60) S.fastCount++;
+    if(T.sec <= 30) S.quick30 = (S.quick30||0) + 1;
+    if(b.empathy) S.empathyCount++;
+    S.keysHits += T.keysFound.length;
+    S.keysPossible += T.scen.keys.length;
+    if(b.greeting && b.caps && b.len) S.cleanCount++;
+    if(T.scen.ct === "злий") S.angryCount++;
+    if(T.scen.cat === "англомовний клієнт") S.engCount++;
+    if(S.lastDay !== t){
+      S.dayStreak = (S.lastDay === daysAgoKey(1)) ? S.dayStreak + 1 : 1;
+      S.lastDay = t;
+    }
+    updateQuests({cat:T.scen.cat, checks:b, sec:T.sec, keysFound:T.keysFound.length, total:xp.total});
+  }
+  var after = lvl();
+  if(after > before) toast("🎉 Рівень " + after + " — " + rankOf(after) + "!");
+  checkBadges();
+  save();
+  renderHeader();
+  T.phase = "done";
+  T.result = {xp:xp, proper:proper, factPct:an.facts.pct};
+  renderReview();
+}
+/* ===== Профіль ===== */
+function renderProfile(){
+  ensureQuests();
+  var li = levelInfo(S.xp), l = li.level;
+  var html = '<div class="grid2">';
+  html += '<div class="card"><h3>' + rankOf(l) + ' <span class="muted small">· рівень ' + l + '/25</span></h3>' +
+    '<div class="bar big"><div class="fill" style="width:' + (li.need ? Math.round(li.into/li.need*100) : 100) + '%"></div></div>' +
+    '<p class="muted small">' + (li.need ? li.into + ' / ' + li.need + ' XP до рівня ' + (l+1) : 'Максимальний рівень досягнуто!') + '</p>' +
+    '<div class="chiprow"><span class="chip">Всього ' + S.xp + ' XP</span>' +
+    '<span class="chip">🔥 серія днів: ' + S.dayStreak + '</span>' +
+    '<span class="chip">серія відповідей: ' + S.streak + ' (рекорд ' + S.bestStreak + ')</span>' +
+    '<span class="chip">бейджі: ' + S.badges.length + '/' + BADGES.length + '</span></div>' +
+    '<p class="muted small" style="margin-top:10px">Наступні бейджі та теми відкриваються з рівнем. Злі клієнти — з 12-го, англомовні — з 15-го, складність 5★ — з 12-го.</p></div>';
+  html += '<div class="card"><h3>🎯 Щоденні квести</h3>';
+  S.quests.list.forEach(function(q){
+    html += '<div class="quest' + (q.done?' done':'') + '"><div class="row between"><span class="small"><b>' + esc(questLabel(q)) + '</b></span><span class="muted small">+' + q.reward + ' XP</span></div>' +
+      '<div class="bar"><div class="fill" style="width:' + Math.min(100, Math.round(Math.min(q.prog,q.target)/q.target*100)) + '%"></div></div>' +
+      '<span class="small muted">' + Math.min(q.prog,q.target) + ' / ' + q.target + (q.done ? ' — виконано ✓' : '') + '</span></div>';
+  });
+  html += '<p class="muted small">Квести оновлюються щодня. Серія днів росте, якщо пройти хоча б один сценарій за день.</p></div>';
+  html += '</div>';
+  html += '<div class="card"><h3>🏅 Бейджі</h3><div class="badgegrid">';
+  BADGES.forEach(function(b){
+    var got = S.badges.indexOf(b.id) !== -1;
+    html += '<div class="badge' + (got?'':' locked') + '"><span class="bic">' + b.icon + '</span><b>' + esc(b.name) + '</b>' + esc(b.desc) + '</div>';
+  });
+  html += '</div></div>';
+  html += '<div class="grid2">';
+  html += '<div class="card"><h3>🎨 Теми інтерфейсу</h3><div class="chiprow">';
+  THEMES.forEach(function(t){
+    var un = S.demoUnlock || l >= t.unlock;
+    html += '<button class="themechip' + (S.theme===t.id?' sel':'') + '" data-theme-id="' + t.id + '"' + (un?'':' disabled') + '>' +
+      t.name + (un?'':' 🔒 рів. ' + t.unlock) + '</button>';
+  });
+  html += '</div></div>';
+  html += '<div class="card"><h3>📄 Мої шаблони відповідей</h3>';
+  if(l < 4 && !S.demoUnlock){
+    html += '<p class="muted small">🔒 Шаблони відкриються на 4-му рівні — зможете зберігати власні фрази й вставляти їх у чат одним кліком.</p>';
+  } else {
+    if(!S.templates.length) html += '<p class="muted small">Ще немає шаблонів. Створіть перший — він з\'явиться кнопкою під полем відповіді в чаті.</p>';
+    S.templates.forEach(function(t){
+      html += '<div class="tplitem"><div style="flex:1"><div class="tt">' + esc(t.title) + '</div><div class="tx">' + esc(t.text) + '</div></div>' +
+        '<button class="btn ghost danger" data-del-tpl="' + t.id + '">✕</button></div>';
+    });
+    html += '<div class="row" style="margin-top:8px"><input type="text" id="tplTitle" placeholder="Назва шаблону" style="flex:0 0 40%">' +
+      '<input type="text" id="tplText" placeholder="Текст шаблону…" style="flex:1"></div>' +
+      '<div class="row end"><button class="btn primary" id="addTplBtn">+ Додати шаблон</button></div>';
+  }
+  html += '</div></div>';
+  html += '<div class="card"><h3>⚙️ Налаштування</h3><div class="chiprow">' +
+    '<button class="btn" id="exportBtn">⬇ Експорт прогресу (JSON)</button>' +
+    '<button class="btn" id="importBtn">⬆ Імпорт прогресу</button>' +
+    '<input type="file" id="importFile" accept=".json,application/json" style="display:none">' +
+    '<label class="chip"><input type="checkbox" id="demoChk"' + (S.demoUnlock?' checked':'') + '> Демо-режим: розблокувати все</label>' +
+    '<button class="btn danger" id="resetBtn">🗑 Скинути прогрес</button></div>' +
+    '<p class="muted small">Прогрес зберігається у localStorage браузера. Експортуйте JSON перед чищенням кешу чи зміною браузера.</p></div>';
+  $("#tab-profile").innerHTML = html;
+  $$("#tab-profile [data-theme-id]").forEach(function(b){
+    b.addEventListener("click", function(){ S.theme = b.dataset.themeId; save(); applyTheme(); renderProfile(); });
+  });
+  $$("#tab-profile [data-del-tpl]").forEach(function(b){
+    b.addEventListener("click", function(){
+      S.templates = S.templates.filter(function(t){ return t.id !== +b.dataset.delTpl; });
+      save(); renderProfile();
+    });
+  });
+  var ab = $("#addTplBtn");
+  if(ab) ab.addEventListener("click", function(){
+    var title = $("#tplTitle").value.trim(), text = $("#tplText").value.trim();
+    if(!title || !text){ toast("Заповніть назву і текст шаблону"); return; }
+    S.templates.push({id:S.tplSeq++, title:title, text:text});
+    save(); checkBadges(); renderProfile(); toast("Шаблон додано");
+  });
+  var dc = $("#demoChk");
+  if(dc) dc.addEventListener("change", function(){ S.demoUnlock = dc.checked; save(); renderProfile(); renderHeader(); });
+  $("#exportBtn").addEventListener("click", exportProgress);
+  $("#importBtn").addEventListener("click", function(){ $("#importFile").click(); });
+  $("#importFile").addEventListener("change", function(e){
+    if(e.target.files && e.target.files[0]) importProgress(e.target.files[0]);
+  });
+  $("#resetBtn").addEventListener("click", function(){
+    if(confirm("Точно скинути весь прогрес? Цю дію не можна скасувати.")){
+      S = defaultState(); save(); applyTheme(); renderHeader(); renderProfile(); toast("Прогрес скинуто");
+    }
+  });
+}
+function exportProgress(){
+  /* Етап 5: у файлі — і тренування, і стан «Тесту» з його історією */
+  var payload = { app:"technodim-trainer", exportedAt:new Date().toISOString(), schema:SCHEMA, trainer:S,
+    assessment:(function(){ try { return JSON.parse(localStorage.getItem("technodimAssessment.v1") || "null"); } catch(e){ return null; } })(),
+    assessmentHistory:(function(){ try { return JSON.parse(localStorage.getItem("technodimAssessment.history.v1") || "[]"); } catch(e){ return []; } })(),
+    shift:(function(){ try { return JSON.parse(localStorage.getItem("technodimShift.v1") || "null"); } catch(e){ return null; } })(),
+    shiftHistory:(function(){ try { return JSON.parse(localStorage.getItem("technodimShift.history.v1") || "[]"); } catch(e){ return []; } })() };
+  var d = new Date();
+  var name = "technodim-progress-" + d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0") + ".json";
+  var blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 500);
+  toast("Експортовано: " + name);
+}
+function importProgress(file){
+  var r = new FileReader();
+  r.onload = function(){
+    try{
+      var o = JSON.parse(r.result);
+      var t = o && (o.trainer || o);            /* підтримка старих експортів (голий стан v1) */
+      if (!t || typeof t !== "object" || typeof t.xp !== "number" || (t.history && !t.history.push)) throw new Error("не схоже на файл прогресу");
+      if (!confirm("Замінити поточний прогрес імпортованим? Поточні дані буде перезаписано.")) return;
+      CORRUPT_MODE = false;
+      LOAD_INFO.corrupt = null;
+      S = migrateState(t);
+      save();
+      try {
+        if (o.assessment) localStorage.setItem("technodimAssessment.v1", JSON.stringify(o.assessment));
+        else localStorage.removeItem("technodimAssessment.v1");
+        if (o.assessmentHistory) localStorage.setItem("technodimAssessment.history.v1", JSON.stringify(o.assessmentHistory));
+        if (o.shift) localStorage.setItem("technodimShift.v1", JSON.stringify(o.shift));
+        if (o.shiftHistory) localStorage.setItem("technodimShift.history.v1", JSON.stringify(o.shiftHistory));
+      } catch(e2){}
+      try { localStorage.removeItem(LS_CORRUPT); } catch(e3){}
+      applyTheme(); ensureQuests(); renderHeader(); renderProfile(); renderStats();
+      var bs = document.querySelector("[data-sysbanner]"); if (bs) bs.remove();
+      toast("Прогрес імпортовано ✓");
+    }catch(e){ toast("❌ Некоректний файл прогресу: " + e.message); }
+  };
+  r.readAsText(file);
+}
+/* Етап 5: банери міграції та пошкоджених даних */
+function showSystemBanners(){
+  try {
+    if (LOAD_INFO.corrupt){
+      var raw = LOAD_INFO.corrupt;
+      var b = document.createElement("div");
+      b.setAttribute("data-sysbanner", "1");
+      b.style.cssText = "background:#b3261e;color:#fff;padding:10px 14px;font-size:13px;line-height:1.6";
+      b.innerHTML = '<b>⚠️ Не вдалося прочитати збережений прогрес (' + esc(LOAD_INFO.corruptErr || "пошкоджені дані") + ').</b> ' +
+        'Сирий рядок збережено в localStorage («' + esc(LS_CORRUPT) + '») — зараз працює <b>тимчасовий стан, прогрес не зберігається</b>. ' +
+        'Відновити можна через «⬆ Імпорт прогресу» у Профілі або завантажити копію: ' +
+        '<button class="btn" id="dlCorruptBtn" style="margin:0 6px">⬇ Завантажити копію даних</button>';
+      document.body.insertBefore(b, document.body.firstChild);
+      document.getElementById("dlCorruptBtn").addEventListener("click", function(){
+        var blob = new Blob([raw], {type:"application/json"});
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "technodim-corrupt-" + new Date().toISOString().slice(0,10) + ".json";
+        a.click();
+        setTimeout(function(){ URL.revokeObjectURL(a.href); }, 500);
+      });
+    } else if (LOAD_INFO.migratedFrom != null){
+      var m = document.createElement("div");
+      m.setAttribute("data-sysbanner", "1");
+      m.style.cssText = "background:#1e7d3e;color:#fff;padding:8px 14px;font-size:13px";
+      m.innerHTML = '✅ Прогрес успішно оновлено до версії 2.0 без втрат. Резервна копія старих даних — ключ «' + esc(LOAD_INFO.backupKey) + '» у localStorage.';
+      document.body.insertBefore(m, document.body.firstChild);
+      setTimeout(function(){ if (m.parentNode) m.parentNode.removeChild(m); }, 12000);
+    }
+  } catch(e){}
+}
+
+/* ===== Статистика ===== */
+function buildChart(){
+  var days = [];
+  for(var i = 13; i >= 0; i--){ var k = daysAgoKey(i); days.push({k:k, v:S.xpByDay[k]||0}); }
+  var max = Math.max(10, Math.max.apply(null, days.map(function(d){ return d.v; })));
+  var w = 560, h = 150, col = w/14;
+  var svg = '<svg viewBox="0 0 ' + w + ' ' + (h+20) + '" class="chart" role="img" aria-label="XP за 14 днів">';
+  days.forEach(function(d, i){
+    var bh = Math.round(d.v/max*h);
+    var x = i*col + 5, bw = col - 10;
+    svg += '<rect x="' + x + '" y="' + (h-bh) + '" width="' + bw + '" height="' + bh + '" rx="3" class="barrect"><title>' + d.k + ': ' + d.v + ' XP</title></rect>';
+    if(d.v > 0) svg += '<text x="' + (x+bw/2) + '" y="' + (h-bh-4) + '" text-anchor="middle" class="bval">' + d.v + '</text>';
+    svg += '<text x="' + (x+bw/2) + '" y="' + (h+14) + '" text-anchor="middle" class="blab">' + d.k.slice(8) + '</text>';
+  });
+  svg += '</svg>';
+  return svg;
+}
+function weakPoints(){
+  var agg = {};
+  S.history.forEach(function(h){
+    (h.checksAll||[]).forEach(function(k){ if(!agg[k]) agg[k] = {ok:0, tot:0}; agg[k].tot++; });
+    (h.checked||[]).forEach(function(k){ if(agg[k]) agg[k].ok++; });
+  });
+  return Object.keys(agg).map(function(k){
+    var v = agg[k];
+    return {name:CL[k]||k, pct:v.tot ? Math.round(v.ok/v.tot*100) : 0, tot:v.tot};
+  }).sort(function(a,b){ return a.pct - b.pct; }).slice(0,6);
+}
+function renderStats(){
+  var avg = S.doneCount ? Math.round((S.totalSec||0)/S.doneCount) : 0;
+  var keyPct = S.keysPossible ? Math.round(S.keysHits/S.keysPossible*100) : 0;
+  var html = '<div class="statcards">' +
+    '<div class="statcard"><div class="v">' + S.doneCount + '</div><div class="l">сценаріїв пройдено</div></div>' +
+    '<div class="statcard"><div class="v">' + S.xp + '</div><div class="l">всього XP</div></div>' +
+    '<div class="statcard"><div class="v">' + (S.doneCount ? fmtSec(avg) : "—") + '</div><div class="l">середній час відповіді</div></div>' +
+    '<div class="statcard"><div class="v">' + (S.keysPossible ? keyPct + "%" : "—") + '</div><div class="l">точність ключових слів</div></div></div>';
+  html += '<div class="card" style="margin-top:14px"><h3>📈 XP за останні 14 днів</h3>' + buildChart() + '</div>';
+  /* Етап 4: окрема статистика англомовної практики */
+  var engHist = S.history.filter(function(h){ return h.cat === "англомовний клієнт"; });
+  var engAvg = engHist.length ? Math.round(engHist.reduce(function(a,h){ return a + (h.qa100 || 0); }, 0) / engHist.length) : null;
+  html += '<div class="card" style="margin-top:14px"><h3>🇬🇧 Англійська практика</h3>' +
+    (engHist.length ?
+      '<div class="statcards"><div class="statcard"><div class="v">' + engHist.length + '</div><div class="l">англомовних тікетів</div></div>' +
+      '<div class="statcard"><div class="v">' + engAvg + '</div><div class="l">середній QA / 100</div></div></div>' +
+      '<p class="muted small">Метрики отримані з навчальної симуляції, а не з реальної роботи.</p>'
+      : '<p class="muted small">Ще немає англомовних тікетів. Увімкніть 🇬🇧 English shift у тренуванні або пройдіть English-тест.</p>') +
+    '</div>';
+  /* Етап 6: картка робочих змін (FRT/AHT/Resolution) */
+  var shArch = (window.Shift && window.Shift.getArchive) ? window.Shift.getArchive() : [];
+  html += '<div class="card" style="margin-top:14px"><h3>🕹 Робочі зміни</h3>' +
+    (shArch.length ?
+      '<div class="statcards">' +
+      '<div class="statcard"><div class="v">' + (function(){ var f = shArch.filter(function(x){ return x.frt != null; }); return f.length ? Math.round(f.reduce(function(a,x){ return a + x.frt; }, 0) / f.length) + " с" : "—"; })() + '</div><div class="l">середній FRT</div></div>' +
+      '<div class="statcard"><div class="v">' + (function(){ var a = shArch.filter(function(x){ return x.aht != null; }); return a.length ? Math.round(a.reduce(function(s,x){ return s + x.aht; }, 0) / a.length) + " с" : "—"; })() + '</div><div class="l">середній AHT</div></div>' +
+      '<div class="statcard"><div class="v">' + (function(){ var r = shArch.filter(function(x){ return x.resolution != null; }); return r.length ? Math.round(r.reduce(function(s,x){ return s + x.resolution; }, 0) / r.length) + "%" : "—"; })() + '</div><div class="l">Resolution Rate</div></div>' +
+      '<div class="statcard"><div class="v">' + shArch.length + '</div><div class="l">змін завершено</div></div></div>' +
+      '<p class="muted small">Метрики отримані з навчальної симуляції, а не з реальної роботи.</p>'
+      : '<p class="muted small">Ще не завершено жодної зміни. Запустіть 🕹 Зміна.</p>') +
+    '</div>';
+  var wp = weakPoints();
+  html += '<div class="grid2">';
+  html += '<div class="card"><h3>🩹 Слабкі пункти чекліста</h3>';
+  if(!wp.length) html += '<p class="muted small">Пройдіть кілька сценаріїв — тут з\'являться пункти, які ви найчастіше пропускаєте.</p>';
+  wp.forEach(function(w){
+    html += '<div class="weakitem"><div class="row between"><span class="small">' + esc(w.name) + '</span><span class="small muted">' + w.pct + '%</span></div>' +
+      '<div class="bar"><div class="fill" style="width:' + w.pct + '%;background:' + (w.pct < 40 ? 'var(--bad)' : w.pct < 70 ? 'var(--warn)' : 'var(--ok)') + '"></div></div></div>';
+  });
+  html += '</div>';
+  html += '<div class="card"><h3>🧠 Історія відповідей</h3><div class="history">';
+  if(!S.history.length) html += '<p class="muted small">Історія порожня — пройдіть перший сценарій.</p>';
+  S.history.slice(0,15).forEach(function(h){
+    var d = new Date(h.ts);
+    html += '<details><summary>' + (h.proper?'✅':'⬜') + ' ' + d.toLocaleDateString("uk-UA") + ' ' + d.toLocaleTimeString("uk-UA",{hour:"2-digit",minute:"2-digit"}) +
+      ' · ' + esc(h.cat) + ' · ' + stars(h.dfn) + ' · ' + fmtSec(h.sec) + ' · +' + h.xp + ' XP' +
+      (h.qa100 != null ? ' · QA ' + h.qa100 + '/100' : ' · <span class="muted">до версії 2.0</span>') + '</summary><div class="histbody">' +
+      '<div class="lab">Ви (' + h.answers.length + ' відповіді, ключові ' + h.keysFound + '/' + h.keysTotal + '):</div>' +
+      h.answers.map(function(a){ return '<div style="white-space:pre-wrap">— ' + esc(a) + '</div>'; }).join("") +
+      '<div class="lab">Еталон:</div><div class="refcard" style="font-size:13px">' + esc(h.ref) + '</div></div></details>';
+  });
+  html += '</div></div></div>';
+  /* ===== Етап 5: розширена статистика ===== */
+  (function(){
+    var byCat = {};
+    CATS.forEach(function(c){ byCat[c.id] = { count:0, qaSum:0, qaN:0, scoreSum:0, scoreN:0 }; });
+    S.history.forEach(function(h){
+      if (!byCat[h.cat]) return;
+      byCat[h.cat].count++;
+      if (h.qa100 != null) { byCat[h.cat].qaSum += h.qa100; byCat[h.cat].qaN++; }
+      if (h.score != null) { byCat[h.cat].scoreSum += h.score; byCat[h.cat].scoreN++; }
+    });
+    var catRows = CATS.filter(function(c){ return byCat[c.id].count > 0; });
+    html += '<div class="card" style="margin-top:14px"><h3>📊 По категоріях</h3>';
+    if (!catRows.length) html += '<p class="muted small">Ще немає пройдених тікетів.</p>';
+    else {
+      html += '<table class="scoretab" style="width:100%"><tr><th>Категорія</th><th>Тікетів</th><th>Середній QA</th><th>Середня оцінка</th></tr>';
+      catRows.forEach(function(c){
+        var b = byCat[c.id];
+        html += '<tr><td>' + esc(c.short) + '</td><td>' + b.count + '</td><td>' +
+          (b.qaN ? Math.round(b.qaSum/b.qaN) + '/100' : '<span class="muted">до версії 2.0</span>') + '</td><td>' +
+          (b.scoreN ? (Math.round(b.scoreSum/b.scoreN*10)/10) + '/10' : '—') + '</td></tr>';
+      });
+      html += '</table><p class="muted small">Метрики отримані з навчальної симуляції, а не з реальної роботи.</p>';
+    }
+    html += '</div>';
+    /* 3 найслабші категорії за середнім QA (де є дані версії 2.0) */
+    var weak = catRows.map(function(c){ var b = byCat[c.id]; return { id:c.id, short:c.short, avg: b.qaN ? b.qaSum/b.qaN : null }; })
+      .filter(function(x){ return x.avg != null; }).sort(function(a,b){ return a.avg - b.avg; }).slice(0,3);
+    html += '<div class="card" style="margin-top:14px"><h3>🎯 3 найслабші категорії</h3>';
+    if (!weak.length) html += '<p class="muted small">Поки недостатньо даних — потрібні тікети, пройдені у версії 2.0 (з QA).</p>';
+    weak.forEach(function(w){
+      html += '<div class="row between" style="margin:6px 0"><span>' + esc(w.short) + ' — <b>' + Math.round(w.avg) + '/100</b></span>' +
+        '<button class="btn" data-train-cat="' + esc(w.id) + '">Тренувати це</button></div>';
+    });
+    html += '</div>';
+    /* Динаміка QA за останні 14 днів (SVG без бібліотек) */
+    var days = [];
+    for (var di = 13; di >= 0; di--){
+      var d0 = new Date(); d0.setHours(0,0,0,0); d0.setDate(d0.getDate() - di);
+      var d1 = d0.getTime() + 86400000;
+      var pts = S.history.filter(function(h){ return h.qa100 != null && h.ts >= d0.getTime() && h.ts < d1; });
+      days.push(pts.length ? Math.round(pts.reduce(function(a,h){ return a + h.qa100; }, 0) / pts.length) : null);
+    }
+    var W = 640, H = 130, padX = 26, stepX = (W - 2*padX) / 13;
+    var seg = "", dots = "", prev = null, qaDays = 0;
+    days.forEach(function(q, i){
+      if (q == null) { prev = null; return; }
+      qaDays++;
+      var x = Math.round(padX + i*stepX), y = H - Math.round(q/100*(H-14));
+      dots += '<circle cx="' + x + '" cy="' + y + '" r="3.5" fill="var(--accent)"/>';
+      if (prev) seg += '<line x1="' + prev.x + '" y1="' + prev.y + '" x2="' + x + '" y2="' + y + '" stroke="var(--accent)" stroke-width="2"/>';
+      prev = { x:x, y:y };
+    });
+    var svg = '<svg viewBox="0 0 ' + W + ' ' + (H+8) + '" style="width:100%;max-width:640px">' +
+      '<line x1="' + padX + '" y1="' + H + '" x2="' + (W-padX) + '" y2="' + H + '" stroke="var(--muted)" stroke-width="1"/>' +
+      seg + dots + '</svg>';
+    html += '<div class="card" style="margin-top:14px"><h3>📈 Динаміка QA за останні 14 днів</h3>' +
+      (qaDays ? svg : '<p class="muted small">Поки немає QA-даних — тікети «до версії 2.0» не рахуємо, щоб не вигадувати цифри.</p>') + '</div>';
+    /* Топ-5 повторюваних помилок: пропущені факти, FORBIDDEN, ескалації, ENG_MISTAKES */
+    var mistakeCount = {};
+    function bump(label){ mistakeCount[label] = (mistakeCount[label] || 0) + 1; }
+    S.history.slice(0, 200).forEach(function(h){
+      var sc = null;
+      for (var i = 0; i < (window.SCENARIOS||[]).length; i++){ if (window.SCENARIOS[i].id === h.sid){ sc = window.SCENARIOS[i]; break; } }
+      if (!sc) return;
+      var refNorm = normalizeAnswerText(String(sc.ref||"").toLowerCase());
+      var fa = analyzeFacts(sc, h.answers || [], refNorm);
+      fa.list.forEach(function(f){ if (!f.hit) bump("пропущений факт: " + f.l); });
+      checkForbidden(h.answers || []).forEach(function(f){ bump("критична помилка: " + f.l); });
+      if (h.esc){
+        if (h.esc.missed) bump("пропущена ескалація: " + (h.esc.dept || "?"));
+        if (h.esc.unnecessary) bump("зайва ескалація");
+        if (h.esc.required && h.esc.deptOk === false && !h.esc.missed) bump("ескалація не в той відділ");
+      }
+      if (h.cat === "англомовний клієнт"){
+        englishIssues(h.answers || []).forEach(function(m){ bump("🇬🇧 " + m.bad + " → " + m.good); });
+      }
+    });
+    var top = Object.keys(mistakeCount).map(function(k){ return { label:k, n:mistakeCount[k] }; })
+      .sort(function(a,b){ return b.n - a.n; }).slice(0,5);
+    html += '<div class="card" style="margin-top:14px"><h3>🔁 Топ-5 повторюваних помилок</h3>';
+    if (!top.length) html += '<p class="muted small">Помилок поки не зафіксовано.</p>';
+    top.forEach(function(m){ html += '<div class="factrow">' + esc(m.label) + ' <span class="chip">' + m.n + '×</span></div>'; });
+    html += '</div>';
+    /* Історія тестових завдань «Тест» — окремо від тренувань */
+    var arch = (window.Assessment && window.Assessment.getArchive) ? window.Assessment.getArchive() : [];
+    html += '<div class="card" style="margin-top:14px"><h3>🧪 Історія тестових завдань</h3>';
+    if (!arch.length) html += '<p class="muted small">Ще не завершено жодного тестового завдання.</p>';
+    arch.forEach(function(a){
+      var d = new Date(a.ts);
+      html += '<div class="factrow">' + d.toLocaleDateString("uk-UA") + ' ' + d.toLocaleTimeString("uk-UA",{hour:"2-digit",minute:"2-digit"}) +
+        ' · <b>' + esc(a.level) + '</b> · середній QA <b>' + (a.avg != null ? a.avg : "—") + '/100</b> · здано ' + (a.doneCount != null ? a.doneCount : "—") + '/10' +
+        (a.reason === "time" ? ' · час вийшов' : a.reason === "early" ? ' · достроково' : '') + '</div>';
+    });
+    html += '</div>';
+  })();
+  $("#tab-stats").innerHTML = html;
+  $$("#tab-stats [data-train-cat]").forEach(function(b){
+    b.addEventListener("click", function(){
+      pick.english = false;
+      pick.cat = b.dataset.trainCat;
+      pick.diff = 0;
+      switchTab("train");
+    });
+  });
+}
+
+/* ===== Довідник оператора ===== */
+var RULES = [
+  {icon:"🕘", t:"Робочі години", d:"Підтримка ТехноДім працює щодня з 09:00 до 21:00. Поза графіком клієнт отримує авто-відповідь, а його звернення опрацьовують до 10:00 наступного дня."},
+  {icon:"🚚", t:"Доставка", d:"Нова пошта — 1–2 дні (відділення, поштомат, кур'єр). Укрпошта — 3–5 днів. Відправка щодня до 16:00. Безкоштовна доставка — від 2500 грн. ТТН надходить у SMS та на e-mail."},
+  {icon:"💳", t:"Оплата", d:"Карткою онлайн (Visa/Mastercard) або післяплатою (+20 грн — комісія перевізника). Повернення коштів — протягом 3–5 робочих днів після підтвердження."},
+  {icon:"🔄", t:"Повернення", d:"14 днів з дня отримання для товару належної якості: товар не вживався, упаковка збережена. Зворотна доставка товару належної якості — за рахунок покупця."},
+  {icon:"🛡️", t:"Гарантія", d:"12 місяців на всю техніку. Діагностика в сервісному центрі — до 5 робочих днів. Підтверджений виробничий брак — ремонт або заміна. Гарантія не покриває механічні пошкодження і сліди самостійного втручання."},
+  {icon:"🗣️", t:"Тон листа", d:"На «Ви», без КАПСУ й зайвих знаків оклику. 3–5 речень, суть на початку. Кожен лист завершуйте конкретною дією і терміном."}
+];
+var PHRASES = [
+  {g:"Привітання та завершення", items:[
+    "Добрий день! Мене звати Олена, компанія ТехноДім. Чим можу допомогти?",
+    "Вітаю! Радий бачити вас у ТехноДім. Одразу переходжу до вашого питання.",
+    "Дякую за звернення! Якщо виникнуть ще питання — пишіть, ми на зв'язку щодня з 09:00 до 21:00.",
+    "Радий був допомогти! Гарного дня і дякуємо, що обрали ТехноДім.",
+    "Гарного дня! Ми завжди поруч — звертайтеся з будь-яким питанням."]},
+  {g:"Вибачення", items:[
+    "Вибачте за незручності — уже перевіряю ваше замовлення.",
+    "Перепрошую за затримку, розумію ваше роздратування. Зараз все уточню.",
+    "Мені шкода, що так сталося. Беру це питання під особистий контроль.",
+    "Це наша помилка — дякую, що повідомили. Виправимо найближчим часом.",
+    "Вибачте за хибну інформацію — перевіряю ще раз і повертаюся з точними даними."]},
+  {g:"Очікування та перевірка", items:[
+    "Перевіряю інформацію, це займе 1–2 хвилини. Прошу хвилинку терпіння.",
+    "Зачекайте, будь ласка, я уточнюю дані у відділі логістики.",
+    "Одну мить, переглядаю історію вашого замовлення.",
+    "Щоб дати точну відповідь, перевіряю статус у системі — вже займаюсь цим.",
+    "Дякую за терпіння! Ось що мені вдалося з'ясувати…"]},
+  {g:"Відмова", items:[
+    "На жаль, повернути цей товар після 14 днів ми не можемо, але діє гарантія 12 місяців — розкажу, як нею скористатися.",
+    "Розумію ваше бажання, але правилами ТехноДім ця опція не передбачена. Можу запропонувати альтернативу…",
+    "На жаль, знижку на цей товар застосувати не можна — він уже в акції за найкращою ціною.",
+    "Це виходить за межі моїх можливостей, проте ось що я можу зробити для вас уже зараз…",
+    "На жаль, цей випадок не підпадає під гарантію — стався механічний вплив. Але ремонт у сервісному центрі вирішить проблему."]},
+  {g:"Передача колезі", items:[
+    "Ваше питання потребує рішення старшого колеги — передаю звернення, він відповість протягом 10 хвилин.",
+    "Щоб вирішити це найшвидше, підключаю колегу з фінансового відділу. Зачекайте, будь ласка, на лінії.",
+    "Я передам усі деталі вашої справи колезі — вам не доведеться нічого повторювати.",
+    "Передаю вас старшому оператору і особисто залишаюся на зв'язку, доки колега підключиться."]},
+  {g:"Емпатія", items:[
+    "Розумію, як це неприємно — на вашому місці я б теж хвилювався.",
+    "Поділяю ваше хвилювання, давайте разом швидко все вирішимо.",
+    "Бачу, як довго ви цього чекаєте — зроблю все, щоб пришвидшити процес."]},
+  {g:"Наступний крок", items:[
+    "Я особисто проконтролюю відправку і напишу вам, щойно ТТН буде в системі.",
+    "Після перевірки надішлю вам SMS з підтвердженням до кінця дня.",
+    "Якщо до завтра статус не оновиться — напишіть мені, і я запитую у перевізника особисто."]}
+];
+var MISTAKES = [
+  "КАПС і багато знаків оклику — клієнт читає це як крик. Пишіть спокійно, навіть якщо клієнт кричить.",
+  "Сухе «ні» без пояснення — завжди додавайте причину відмови та варіант дій.",
+  "Відповідь без привітання — починайте з «Добрий день» і представтеся.",
+  "Ігнорування емоції клієнта — спочатку визнайте почуття, потім розв'язуйте проблему.",
+  "Обіцянки поза політикою («повернемо гроші за годину») — обіцяти можна лише те, що ви точно можете виконати.",
+  "Стіни тексту — тримайте 3–5 речень, суть на початку.",
+  "Питання, відповідь на які вже є в листі клієнта, — читайте повідомлення уважно.",
+  "Немає наступного кроку — кожне повідомлення закінчуйте дією і терміном.",
+  "Канцелярит («Ваше звернення було ресоловане») — пишіть живою людською мовою.",
+  "Сперечатися з клієнтом — навіть коли ви праві, виграє той, хто вирішив проблему."
+];
+function copyText(txt, btn){
+  function done(){ if(btn){ var o = btn.textContent; btn.textContent = "✓ Скопійовано"; setTimeout(function(){ btn.textContent = o; }, 1200); } }
+  function fallback(){
+    var ta = document.createElement("textarea");
+    ta.value = txt; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); done(); }catch(e){}
+    ta.remove();
+  }
+  if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, fallback);
+  else fallback();
+}
+function renderGuide(){
+  var html = '<div class="card"><h3>📜 Правила магазину «ТехноДім»</h3><div class="rulegrid">';
+  RULES.forEach(function(r){ html += '<div class="card" style="margin:0"><h3>' + r.icon + ' ' + esc(r.t) + '</h3><p class="small">' + esc(r.d) + '</p></div>'; });
+  html += '</div></div>';
+  html += '<div class="card"><h3>💬 30 готових шаблонів фраз</h3><p class="muted small">Натисніть «Копіювати», щоб вставити фразу в будь-який чат.</p>';
+  var n = 0;
+  PHRASES.forEach(function(gr){
+    html += '<div class="grouplab">' + esc(gr.g) + '</div>';
+    gr.items.forEach(function(p){
+      n++;
+      html += '<div class="phr"><span>' + n + '. ' + esc(p) + '</span><button class="btn" data-copy="' + esc(p) + '">📋 Копіювати</button></div>';
+    });
+  });
+  html += '</div>';
+  html += '<div class="card"><h3>🚫 Типові помилки новачків</h3>';
+  MISTAKES.forEach(function(m, i){ html += '<div class="mist"><b>' + (i+1) + '.</b> ' + esc(m) + '</div>'; });
+  html += '</div>';
+  $("#tab-guide").innerHTML = html;
+  $$("#tab-guide [data-copy]").forEach(function(b){
+    b.addEventListener("click", function(){ copyText(b.dataset.copy, b); });
+  });
+}
+
+/* ===== Завантаження частин сценаріїв та запуск ===== */
+var PARTS_TOTAL = 12;
+window.PARTS_LOADED = 0;
+window.PARTS_MISSING = [];
+function loadPart(i){
+  return new Promise(function(res){
+    if(i > PARTS_TOTAL){ res(); return; }
+    var sc = document.createElement("script");
+    sc.src = "scenarios_" + String(i).padStart(2,"0") + ".js";
+    sc.onload = function(){ window.PARTS_LOADED++; loadPart(i+1).then(res); };
+    sc.onerror = function(){ window.PARTS_MISSING.push(i); loadPart(i+1).then(res); };
+    document.head.appendChild(sc);
+  });
+}
+function init(){
+  applyTheme();
+  ensureQuests();
+  renderHeader();
+  showSystemBanners();
+  $$(".tab").forEach(function(b){ b.addEventListener("click", function(){ switchTab(b.dataset.tab); }); });
+  renderTrain();
+  if(!S.seenHint){
+    S.seenHint = true; save();
+    setTimeout(function(){ toast("👋 Ласкаво просимо! Оберіть категорію та пройдіть перший сценарій."); }, 600);
+  }
+}
+loadPart(1).then(init);
+</script>
+<script src="assessment.js"></script>
+<script src="escalation.js"></script>
+<script src="shift.js"></script>
+</body>
+</html>
